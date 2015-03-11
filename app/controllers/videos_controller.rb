@@ -1,7 +1,7 @@
 class VideosController < ApplicationController
 
   def index
-    @videos = Video.all
+    @categories = Category.includes(:videos).reject { |category| category.videos.empty? }
   end
 
   def show
