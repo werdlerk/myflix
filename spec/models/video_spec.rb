@@ -7,4 +7,12 @@ describe Video do
 
     expect(Video.first).to eq(video)
   end
+
+  it 'belongs to a category' do
+    category = Category.create(name:'Oldies')
+    video = Video.create(title: 'Mary Poppins', description: 'Mary Poppins', category:category )
+
+    expect(Video.first.category).to eq(category)
+  end
+
 end
