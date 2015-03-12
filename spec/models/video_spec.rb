@@ -15,4 +15,20 @@ describe Video do
     expect(Video.first.category).to eq(category)
   end
 
+  it 'validates the required title' do
+    video = Video.new(description: 'Wop wop wop')
+    video.save
+
+    expect(Video.count).to eq(0)
+    expect(video.errors.keys).to include(:title)
+  end 
+
+  it 'validates the required description' do
+    video = Video.new(title: 'Maze Runner')
+    video.save
+
+    expect(Video.count).to eq(0)
+    expect(video.errors.keys).to include(:description)
+  end
+
 end
