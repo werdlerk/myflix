@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.1'
 
 gem 'bootstrap-sass'
+gem 'bootstrap_form'
 gem 'coffee-rails'
 gem 'rails', '4.1.1'
 gem 'haml-rails'
@@ -9,6 +10,9 @@ gem 'sass-rails'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'pg'
+
+# has_secure_password
+gem 'bcrypt'
 
 group :development do
   gem 'thin'
