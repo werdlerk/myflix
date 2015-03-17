@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :redirect_users_to_home
 
   def new
     @user = User.new

@@ -1,9 +1,5 @@
 class SessionsController < ApplicationController
-
-  def new
-    session[:login_referrer] = request.referrer if request.referrer
-    session[:user_id] = nil if user_logged_in?
-  end
+  before_action :redirect_users_to_home, only: [:new, :create]
 
   def create
     user = User.find_by_email(params[:email])
@@ -11,12 +7,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       flash[:success] = "Welcome back, #{user.name}"
-
-      if session[:login_referrer]
-        redirect_to session.delete(:login_referrer)
-      else
-        redirect_to root_path
-      end
+      redirect_to home_path
     else
       flash.now[:danger] = "Incorrect email or password"
       render :new
@@ -26,12 +17,7 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:success] = "You've logged out, see you next time!"
-
-    if request.referrer && request.referrer != logout_url
-      redirect_to request.referrer
-    else
-      redirect_to root_path
-    end
+    redirect_to root_path
   end
 
 end

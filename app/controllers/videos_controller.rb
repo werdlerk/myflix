@@ -1,4 +1,5 @@
 class VideosController < ApplicationController
+  before_action :require_user
 
   def index
     @categories = Category.includes(:videos).reject { |category| category.videos.empty? }
