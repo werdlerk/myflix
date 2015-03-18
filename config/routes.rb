@@ -13,10 +13,8 @@ Myflix::Application.routes.draw do
     collection do
       get 'search'
     end
-
   end
   resources :categories, only: [:show]
-  
 
   # Mockups
   get 'ui(/:action)', controller: 'ui'

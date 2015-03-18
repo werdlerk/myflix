@@ -5,6 +5,6 @@ class Video < ActiveRecord::Base
 
   def self.search_by_title(search_term)
     return [] if search_term.empty?
-    Video.where('title LIKE ?', "%#{search_term}%").order('created_at DESC')
+    Video.where('title LIKE ?', "%#{search_term}%").order(created_at: :desc)
   end
 end

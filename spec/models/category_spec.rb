@@ -42,12 +42,7 @@ describe Category do
         category.videos << Video.create(title: "Video #{i}", description: "Video #{i}", created_at: (15-i).days.ago)
       end
 
-      expect(category.recent_videos[0].title).to eq('Video 9')
-      expect(category.recent_videos[1].title).to eq('Video 8')
-      expect(category.recent_videos[2].title).to eq('Video 7')
-      expect(category.recent_videos[3].title).to eq('Video 6')
-      expect(category.recent_videos[4].title).to eq('Video 5')
-      expect(category.recent_videos[5].title).to eq('Video 4')
+      expect(category.recent_videos.map(&:title)).to eq(['Video 9', 'Video 8', 'Video 7', 'Video 6', 'Video 5', 'Video 4'])
     end
   end
 end
