@@ -3,37 +3,52 @@ require "spec_helper"
 describe UsersController do
   
   describe 'GET #new' do
-    it 'should render the new template' do
+    before do
       get :new
-
+    end
+    
+    it 'should render the new template' do
       expect(response).to render_template :new
     end
 
-    it 'should create the @user variable' do
-      get :new
-
+    it 'should sets the @user variable' do
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
   describe 'POST #create' do
-    let(:user_params) { { user: { name: 'Koen', :email => 'koen@example.com', :password => 'is a secret' } } }
-    it 'should create the user' do
-      post :create, user_params
+    
+    context "with valid input" do
+      before do
+        post :create, user: Fabricate.attributes_for(:user)
+      end
 
-      expect(assigns(:user)).not_to be_a_new(User)
+      it 'should create the user' do
+        expect(assigns(:user)).not_to be_a_new(User)
+        expect(User.count).to eq(1)
+      end
+
+      it 'should redirect to the login page with the flash message' do
+        expect(response).to redirect_to login_path
+      end
     end
 
-    it 'should redirect to the login page with the flash message' do
-      post :create, user_params
+    context "with invalid input" do
+      before do
+        post :create, { user: { name: 'Koen' } }
+      end
 
-      expect(response).to redirect_to login_path
-    end
+      it 'does not create the user' do
+        expect(User.count).to eq(0)
+      end
 
-    it 'should render the new page for form errors' do
-      post :create, { user: { name: 'Koen' } }
+      it 'should render the new page for form errors' do
+        expect(response).to render_template 'new'
+      end
 
-      expect(response).to render_template 'new'
+      it 'sets the @user variable' do
+        expect(assigns(:user)).to be_a_new(User)
+      end
     end
   end
 
