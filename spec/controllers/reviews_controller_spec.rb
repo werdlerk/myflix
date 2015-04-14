@@ -40,6 +40,10 @@ describe ReviewsController do
         it 'renders the videos/show template' do
           expect(response).to render_template 'videos/show'
         end
+
+        it 'sets the validation message' do
+          expect(assigns(:review).errors).to be_present
+        end
       end
     end
 
