@@ -1,12 +1,12 @@
 require "spec_helper"
 
 describe UsersController do
-  
+
   describe 'GET #new' do
     before do
       get :new
     end
-    
+
     it 'should render the new template' do
       expect(response).to render_template :new
     end
@@ -17,7 +17,7 @@ describe UsersController do
   end
 
   describe 'POST #create' do
-    
+
     context "with valid input" do
       before do
         post :create, user: Fabricate.attributes_for(:user)

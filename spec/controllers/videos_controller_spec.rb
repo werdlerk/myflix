@@ -5,7 +5,7 @@ describe VideosController do
   let(:video) { Fabricate(:video) }
 
   describe 'GET #index' do
-    it 'sets the @videos variable for authenticated users' do
+    it 'sets the @categories variable for authenticated users' do
       request.session['user_id'] = user.id
 
       local_video = video
@@ -23,16 +23,24 @@ describe VideosController do
   end
 
   describe 'GET #show' do
-    it 'sets the @video variable for authenticated users' do
-      request.session['user_id'] = user.id
+    context 'authenticated users' do
+      before { request.session['user_id'] = user.id }
+      it 'sets the @video variable for authenticated users' do
+        get :show, id: video.id
+        expect(assigns(:video)).to eq(video)
+      end
 
-      get :show, id: video.id
-      expect(assigns(:video)).to eq(video)
+      it 'sets the @review variable for authenticated users' do
+        get :show, id: video.id
+        expect(assigns(:review)).to be_a_new(Review)
+      end
     end
 
-    it 'redirects to root for unauthenticated users' do
-      get :show, id: video.id
-      expect(response).to redirect_to root_path
+    context 'unauthenticated users' do
+      it 'redirects to root for unauthenticated users' do
+        get :show, id: video.id
+        expect(response).to redirect_to root_path
+      end
     end
   end
 
@@ -44,7 +52,7 @@ describe VideosController do
       post :search, q:'oppin'
       expect(assigns(:videos)).to eq([mary_poppins])
     end
-  
+
     it 'redirects to root_path for unauthenticated users' do
       post :search, q: 'Mary'
       expect(response).to redirect_to root_path

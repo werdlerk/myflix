@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe SessionsController do
   let(:user) { User.create( name: 'John Doe', email: 'johndoe@example.com', password: 'secret' ) }
-  
+
   describe "GET #new" do
     it "renders the new template for unauthenticated users" do
       get :new
