@@ -40,7 +40,7 @@
         %header
           %h3 User Reviews (#{@video.reload.reviews.size})
         %ul
-          - @video.reviews.each do |review|
+          - @video.reload.reviews.includes(:author).each do |review|
             %article.review
               %li.row
                 .col-sm-2
