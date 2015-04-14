@@ -7,6 +7,7 @@ class VideosController < ApplicationController
 
   def show
     @video = Video.find(params[:id])
+    @reviews = @video.reload.reviews.includes(:author)
     @review = Review.new
   end
 

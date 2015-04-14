@@ -36,11 +36,11 @@
           = f.submit "Submit", class:'btn'
           = link_to "Cancel", root_path
 
-      - if @video.reload.reviews.present?
+      - if @reviews.present?
         %header
-          %h3 User Reviews (#{@video.reload.reviews.size})
+          %h3 User Reviews (#{@reviews.size})
         %ul
-          - @video.reload.reviews.includes(:author).each do |review|
+          - @reviews.each do |review|
             %article.review
               %li.row
                 .col-sm-2

@@ -25,19 +25,26 @@ describe VideosController do
   describe 'GET #show' do
     context 'authenticated users' do
       before { request.session['user_id'] = user.id }
-      it 'sets the @video variable for authenticated users' do
+      before { Fabricate(:review, video: video) }
+      before do
         get :show, id: video.id
+      end
+
+      it 'sets the @video variable' do
         expect(assigns(:video)).to eq(video)
       end
 
-      it 'sets the @review variable for authenticated users' do
-        get :show, id: video.id
+      it 'sets the @reviews variable' do
+        expect(assigns(:reviews)).to be_present
+        expect(assigns(:reviews)).to match_array Review.all
+      end
+      it 'sets the @review variable' do
         expect(assigns(:review)).to be_a_new(Review)
       end
     end
 
     context 'unauthenticated users' do
-      it 'redirects to root for unauthenticated users' do
+      it 'redirects to root' do
         get :show, id: video.id
         expect(response).to redirect_to root_path
       end
