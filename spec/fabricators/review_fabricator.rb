@@ -1,5 +1,5 @@
 Fabricator(:review) do
-  rating 3
+  rating { rand(5) + 1 }
   text Faker::Lorem.paragraph
   author { Fabricate(:user) }
 end
