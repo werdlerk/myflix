@@ -16,7 +16,15 @@ describe ReviewsController do
         end
 
         it 'should create the new Review' do
-          expect(assigns(:review)).not_to be_a_new(Review)
+          expect(Review.count).to eq(1)
+        end
+
+        it 'should create the Review associated with the video' do
+          expect(Review.first.video).to eq video
+        end
+
+        it 'should create the Review associated with the signed in user' do
+          expect(Review.first.author).to eq user
         end
 
         it 'sets the flash message' do
@@ -34,7 +42,15 @@ describe ReviewsController do
         end
 
         it 'does not create the Review' do
-          expect(assigns(:review)).to be_a_new(Review)
+          expect(Review.count).to eq(0)
+        end
+
+        it 'sets @video variable for the current video' do
+          expect(assigns(:video)).to eq(video)
+        end
+
+        it 'sets @reviews variable for displaying current reviews' do
+          expect(assigns(:reviews)).to eq(video.reviews)
         end
 
         it 'renders the videos/show template' do

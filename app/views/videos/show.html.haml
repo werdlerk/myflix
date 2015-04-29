@@ -26,7 +26,7 @@
             %label Rate this video
             .row
               .col-sm-3
-                = f.select :rating, (1..5).map { |i| [ pluralize(i, 'Star'), i] }, class:'form-control'
+                = f.select :rating, (1..5).map { |i| [ pluralize(i, 'Star'), i] }.reverse, class:'form-control'
           .form-group
             %label Write Review
             .row
@@ -34,7 +34,7 @@
                 = f.text_area :text, rows:6, class:'form-control'
         %fieldset.form-group.actions.clearfix
           = f.submit "Submit", class:'btn'
-          = link_to "Cancel", root_path
+          = link_to "Cancel", video_path(@video)
 
       - if @reviews.present?
         %header

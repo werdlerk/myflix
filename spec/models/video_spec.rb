@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Video do
   context 'relations' do
     it { should belong_to(:category) }
-    it { should have_many(:reviews) }
+    it { should have_many(:reviews).order('created_at DESC') }
   end
 
   context 'validations' do
