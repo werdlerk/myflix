@@ -4,6 +4,7 @@ describe Video do
   context 'relations' do
     it { should belong_to(:category) }
     it { should have_many(:reviews).order('created_at DESC') }
+    it { should have_many(:queue_items) }
   end
 
   context 'validations' do
