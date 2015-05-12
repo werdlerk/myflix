@@ -10,10 +10,12 @@ describe QueueItemsController do
     context 'authenticated users' do
       before { request.session[:user_id] = user.id }
 
-      it 'sets the @queue_items variable' do
+      it 'sets the @queue_items variable to the queue items of the logged in user' do
+        Fabricate(:queue_item, video:video, user:User.create(name:'second', email:'second@example.com', password:'secondsecond'))
+
         get :index
 
-        expect(assigns(:queue_items).size).to eq(QueueItem.count)
+        expect(assigns(:queue_items)).to match_array([queue_item])
       end
 
       it 'renders the index template' do

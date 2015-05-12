@@ -17,10 +17,12 @@
             - @queue_items.each do |queue_item|
               %tr
                 %td= number_field_tag :order, queue_item.order, class:'form-control', min:1
-                %td= link_to queue_item.video.title, video_path(queue_item.video)
+                %td= link_to queue_item.video_title, video_path(queue_item.video)
                 %td= link_to "Play", nil, class: "btn btn-default"
-                %td= select_tag :rating, options_for_select((1..5).map { |i| [ pluralize(i, 'Star'), i] }.reverse, queue_item.video.reviews.any? ? queue_item.video.reviews.first.rating : nil), class:'form-group', include_blank:true
-                %td= link_to queue_item.video.category.name, category_path(queue_item.video.category)
+                %td= queue_item.rating
+
+                / = select_tag :rating, options_for_select((1..5).map { |i| [ pluralize(i, 'Star'), i] }.reverse, queue_item.video.reviews.any? ? queue_item.video.reviews.first.rating : nil), class:'form-group', include_blank:true
+                %td= link_to queue_item.category_name, category_path(queue_item.category)
                 %td
                   = link_to queue_item_path(queue_item), method: :delete, data: { confirm:'Are you sure you want to remove this item?' } do
                     %i.glyphicon.glyphicon-remove

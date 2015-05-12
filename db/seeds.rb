@@ -51,3 +51,6 @@ koen = User.create(name: "Koen Werdler", password: "password", email: "koen@werd
 
 Review.create(author:koen, video: suits, rating: 3, text: "Suits's first review. Woohoo!")
 Review.create(author:koen, video: suits, rating: 5, text: "Suits is awesome!")
+
+QueueItem.create(user:koen, video:suits)
+QueueItem.create(user:koen, video:futurama)
