@@ -12,7 +12,7 @@ describe QueueItem do
 
     describe '#video_title' do
       it 'returns the title of the associated video' do
-        queue_item = Fabricate(:queue_item, video:video)
+        queue_item = Fabricate(:queue_item, video:video, user:user)
         expect(queue_item.video_title).to eq('Monk')
       end
     end
@@ -46,6 +46,20 @@ describe QueueItem do
         video = Fabricate(:video, category:category)
         queue_item = Fabricate(:queue_item, user:user, video:video)
         expect(queue_item.category).to eq(category)
+      end
+    end
+
+    describe '#set_order' do
+      it 'sets the order after save' do
+        queue_item = QueueItem.create(user:user, video:video)
+
+        expect(queue_item.order).to be_present
+      end
+
+      it 'sets the order number higher then 0' do
+        queue_item = QueueItem.create(user:user, video:video)
+
+        expect(queue_item.order).to be > 0
       end
     end
   end

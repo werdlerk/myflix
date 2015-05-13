@@ -39,6 +39,22 @@ describe QueueItemsController do
         expect(response).to redirect_to root_path
       end
     end
+  end
+
+  describe 'POST #create' do
+    before { request.session[:user_id] = user.id }
+
+    it 'creates the QueueItem' do
+      post :create, video_id: video.id
+
+      expect(QueueItem.count).to eq(1)
+    end
+
+    it 'redirects to queue_items_path' do
+      post :create, video_id: video.id
+
+      expect(response).to redirect_to queue_items_path
+    end
 
   end
 

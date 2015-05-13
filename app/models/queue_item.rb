@@ -5,6 +5,8 @@ class QueueItem < ActiveRecord::Base
   delegate :category, to: :video
   delegate :title, to: :video, prefix: :video
 
+  before_save :set_order
+
   default_scope { order(:order) }
 
   def rating
@@ -15,5 +17,10 @@ class QueueItem < ActiveRecord::Base
   def category_name
     category.name
   end
+
+  private
+    def set_order
+      self.order = self.user.queue_items.count + 1
+    end
 
 end
