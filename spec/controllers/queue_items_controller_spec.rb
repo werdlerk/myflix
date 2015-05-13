@@ -42,18 +42,66 @@ describe QueueItemsController do
   end
 
   describe 'POST #create' do
-    before { request.session[:user_id] = user.id }
 
-    it 'creates the QueueItem' do
-      post :create, video_id: video.id
+    context 'authenticated users' do
+      before { request.session[:user_id] = user.id }
 
-      expect(QueueItem.count).to eq(1)
+      it 'creates the QueueItem' do
+        post :create, video_id: video.id
+
+        expect(QueueItem.count).to eq(1)
+      end
+
+      it 'redirects to queue_items_path' do
+        post :create, video_id: video.id
+
+        expect(response).to redirect_to my_queue_path
+      end
+
+      it 'creates the queue item that is associated with the video' do
+        post :create, video_id: video.id
+
+        expect(QueueItem.first.video).to eq(video)
+      end
+
+      it 'creates the queue item that is associated with the current_user' do
+        post :create, video_id: video.id
+
+        expect(QueueItem.first.user).to eq(user)
+      end
+
+      it 'puts the video as the last one in the queue' do
+        video1 = Fabricate(:video)
+        video2 = Fabricate(:video)
+
+        post :create, video_id: video2.id
+        post :create, video_id: video1.id
+
+        last_queue_item = QueueItem.where(video_id: video1.id, user: user).first
+
+        expect(last_queue_item.order).to eq(2)
+      end
+
+      it 'does not add the queue_item if the video is already in a queue_item' do
+        post :create, video_id: video.id
+        post :create, video_id: video.id
+
+        expect(QueueItem.count).to eq(1)
+      end
     end
 
-    it 'redirects to queue_items_path' do
-      post :create, video_id: video.id
+    context 'unauthenticated users' do
+      it 'redirects to the root_path for unauthenticated users' do
+        post :create, video_id: video.id
 
-      expect(response).to redirect_to queue_items_path
+        expect(response).to redirect_to root_path
+      end
+
+      it 'sets the flash message' do
+        post :create, video_id: video.id
+
+        expect(flash[:warning]).to be_present
+      end
     end
 
   end
