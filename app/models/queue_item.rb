@@ -5,7 +5,7 @@ class QueueItem < ActiveRecord::Base
   delegate :category, to: :video
   delegate :title, to: :video, prefix: :video
 
-  before_save :set_order
+  before_create :set_order
 
   default_scope { order(:order) }
 

@@ -13,6 +13,7 @@ class QueueItemsController < ApplicationController
 
   def destroy
     QueueItem.find(params[:id]).destroy
+    update_order(current_user.queue_items.order(:order))
     redirect_to queue_items_path
   end
 
@@ -24,5 +25,11 @@ class QueueItemsController < ApplicationController
 
     def already_queued_video?(video)
       QueueItem.exists?(user: current_user, video_id: video.id)
+    end
+
+    def update_order(queue_items)
+      queue_items.each_with_index do |queue_item, index|
+        queue_item.update(order: index+1)
+      end
     end
 end

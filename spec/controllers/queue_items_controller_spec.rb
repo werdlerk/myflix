@@ -110,18 +110,47 @@ describe QueueItemsController do
 
     context 'authenticated users' do
       before { request.session['user_id'] = user.id }
-      before do
-        delete :destroy, id: queue_item.id
-      end
 
       it 'destroys the queue_item' do
+        delete :destroy, id: queue_item.id
+
         expect(QueueItem.count).to eq(0)
       end
 
       it 'redirects to the queue_items_path' do
+        delete :destroy, id: queue_item.id
+
         expect(response).to redirect_to queue_items_path
       end
 
+      it 'updates the order of the other queue_items' do
+        queue_item1 = Fabricate(:queue_item, video: video, user: user)
+
+        video2 = Fabricate(:video)
+        queue_item2 = Fabricate(:queue_item, video: video2, user: user)
+
+        video3 = Fabricate(:video)
+        queue_item3 = Fabricate(:queue_item, video: video3, user: user)
+
+        delete :destroy, id: queue_item1.id
+
+        expect(queue_item3.reload.order).to eq(2)
+      end
+    end
+
+    context 'unauthenticated users' do
+
+      it 'redirects to the root_path for unauthenticated users' do
+        delete :destroy, id: queue_item.id
+
+        expect(response).to redirect_to root_path
+      end
+
+      it 'sets the flash message' do
+        delete :destroy, id: queue_item.id
+
+        expect(flash[:warning]).to be_present
+      end
     end
   end
 
