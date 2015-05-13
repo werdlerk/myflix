@@ -12,9 +12,10 @@ class QueueItemsController < ApplicationController
   end
 
   def destroy
-    QueueItem.find(params[:id]).destroy
+    queue_item = QueueItem.find(params[:id])
+    queue_item.destroy if queue_item.user == current_user
     update_order(current_user.queue_items.order(:order))
-    redirect_to queue_items_path
+    redirect_to my_queue_path
   end
 
   private

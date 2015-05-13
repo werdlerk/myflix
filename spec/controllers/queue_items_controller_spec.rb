@@ -117,10 +117,10 @@ describe QueueItemsController do
         expect(QueueItem.count).to eq(0)
       end
 
-      it 'redirects to the queue_items_path' do
+      it 'redirects to the my_queue_path' do
         delete :destroy, id: queue_item.id
 
-        expect(response).to redirect_to queue_items_path
+        expect(response).to redirect_to my_queue_path
       end
 
       it 'updates the order of the other queue_items' do
@@ -135,6 +135,16 @@ describe QueueItemsController do
         delete :destroy, id: queue_item1.id
 
         expect(queue_item3.reload.order).to eq(2)
+      end
+
+      it 'does not destroy the queue item of a different user' do
+        user1 = Fabricate(:user)
+        queue_item1 = Fabricate(:queue_item, video: video, user: user1)
+        my_queue_item = Fabricate(:queue_item, video: video, user: user)
+
+        delete :destroy, id: queue_item1.id
+
+        expect(QueueItem.count).to eq(2)
       end
     end
 
