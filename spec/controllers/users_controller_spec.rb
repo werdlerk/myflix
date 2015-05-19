@@ -24,7 +24,7 @@ describe UsersController do
       end
 
       it 'should create the user' do
-        expect(assigns(:user)).not_to be_a_new(User)
+        expect(assigns(:user)).to be_persisted
         expect(User.count).to eq(1)
       end
 

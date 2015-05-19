@@ -24,9 +24,9 @@ describe VideosController do
 
   describe 'GET #show' do
     context 'authenticated users' do
-      before { request.session['user_id'] = user.id }
-      before { Fabricate(:review, video: video) }
       before do
+        request.session['user_id'] = user.id
+        Fabricate(:review, video: video)
         get :show, id: video.id
       end
 
@@ -35,7 +35,6 @@ describe VideosController do
       end
 
       it 'sets the @reviews variable' do
-        expect(assigns(:reviews)).to be_present
         expect(assigns(:reviews)).to match_array Review.all
       end
       it 'sets the @review variable' do
