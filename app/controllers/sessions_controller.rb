@@ -1,6 +1,10 @@
 class SessionsController < ApplicationController
   before_action :redirect_users_to_home, only: [:new, :create]
 
+  def new
+    redirect_to home_path if user_logged_in?
+  end
+
   def create
     user = User.find_by_email(params[:email])
 
