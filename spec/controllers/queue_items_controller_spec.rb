@@ -142,9 +142,9 @@ describe QueueItemsController do
         queue_item1 = Fabricate(:queue_item, video: video, user: user1)
         my_queue_item = Fabricate(:queue_item, video: video, user: user)
 
-        delete :destroy, id: queue_item1.id
-
-        expect(QueueItem.count).to eq(2)
+        expect {
+          delete :destroy, id: queue_item1.id
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
