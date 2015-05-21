@@ -6,6 +6,10 @@ describe QueueItem do
     it { should belong_to(:user) }
   end
 
+  context 'validations' do
+    it { should validate_numericality_of(:position).only_integer }
+  end
+
   context 'methods' do
     let(:video) { Fabricate(:video, title: 'Monk') }
     let(:user) { Fabricate(:user) }
@@ -49,17 +53,17 @@ describe QueueItem do
       end
     end
 
-    describe '#set_order' do
-      it 'sets the order after save' do
+    describe '#set_position' do
+      it 'sets the position after save' do
         queue_item = QueueItem.create(user:user, video:video)
 
-        expect(queue_item.order).to be_present
+        expect(queue_item.position).to be_present
       end
 
-      it 'sets the order number higher then 0' do
+      it 'sets the position number higher then 0' do
         queue_item = QueueItem.create(user:user, video:video)
 
-        expect(queue_item.order).to be > 0
+        expect(queue_item.position).to be > 0
       end
     end
   end

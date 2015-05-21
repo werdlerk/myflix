@@ -5,9 +5,9 @@ class QueueItem < ActiveRecord::Base
   delegate :category, to: :video
   delegate :title, to: :video, prefix: :video
 
-  before_create :set_order
+  before_create :set_position
 
-  default_scope { order(:order) }
+  validates_numericality_of :position, only_integer: true, allow_blank: true
 
   def rating
     review = Review.where(author: user, video: video).first
@@ -19,8 +19,8 @@ class QueueItem < ActiveRecord::Base
   end
 
   private
-    def set_order
-      self.order = self.user.queue_items.count + 1
+    def set_position
+      self.position = self.user.queue_items.count + 1
     end
 
 end

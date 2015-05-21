@@ -11,7 +11,8 @@ describe QueueItemsController do
       before { request.session[:user_id] = user.id }
 
       it 'sets the @queue_items variable to the queue items of the logged in user' do
-        Fabricate(:queue_item, video:video, user:User.create(name:'second', email:'second@example.com', password:'secondsecond'))
+        other_user = Fabricate(:user, name:'second')
+        other_queue_item = Fabricate(:queue_item, video:video, user:other_user)
 
         get :index
 
@@ -79,7 +80,7 @@ describe QueueItemsController do
 
         last_queue_item = QueueItem.where(video_id: video1.id, user: user).first
 
-        expect(last_queue_item.order).to eq(2)
+        expect(last_queue_item.position).to eq(2)
       end
 
       it 'does not add the queue_item if the video is already in a queue_item' do
@@ -123,7 +124,7 @@ describe QueueItemsController do
         expect(response).to redirect_to my_queue_path
       end
 
-      it 'updates the order of the other queue_items' do
+      it 'updates the position of the other queue_items' do
         queue_item1 = Fabricate(:queue_item, video: video, user: user)
 
         video2 = Fabricate(:video)
@@ -134,7 +135,8 @@ describe QueueItemsController do
 
         delete :destroy, id: queue_item1.id
 
-        expect(queue_item3.reload.order).to eq(2)
+        expect(queue_item2.reload.position).to eq(1)
+        expect(queue_item3.reload.position).to eq(2)
       end
 
       it 'does not destroy the queue item of a different user' do
@@ -162,6 +164,107 @@ describe QueueItemsController do
         expect(flash[:warning]).to be_present
       end
     end
+  end
+
+  describe 'POST #change' do
+    context 'authenticated users' do
+      before { request.session['user_id'] = user.id }
+
+      let(:video1) { Fabricate(:video) }
+      let(:video2) { Fabricate(:video) }
+      let(:queue_item1) { Fabricate(:queue_item, video: video1, user: user, position: 1) }
+      let(:queue_item2) { Fabricate(:queue_item, video: video2, user: user, position: 2) }
+
+      context 'valid input' do
+        it 'does not change the order when no changes are made' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => '1' },
+            { 'id' => queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(user.queue_items).to eq([queue_item1, queue_item2])
+        end
+
+        it 'changes the position of the item with a different position' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => '3' },
+            { 'id' => queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(user.queue_items).to eq([queue_item2, queue_item1])
+        end
+
+        it 'normalizes the position numbers' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => '3' },
+            { 'id' => queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(queue_item2.reload.position).to eq(1)
+          expect(queue_item1.reload.position).to eq(2)
+        end
+
+        it 'redirects to the my_queue_path' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => '1' },
+            { 'id' => queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(response).to redirect_to my_queue_path
+        end
+      end
+
+      context 'invalid input' do
+        it 'does not change the order of queue_items of someone else' do
+          other_user = Fabricate(:user, name:'second')
+          other_queue_item1 = Fabricate(:queue_item, video:video1, user:other_user, position:1)
+          other_queue_item2 = Fabricate(:queue_item, video:video2, user:other_user, position:2)
+
+          post :change, 'queue_item' => [
+            { 'id' => other_queue_item1.id.to_s, 'position' => '1' },
+            { 'id' => other_queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(other_queue_item1.reload.position).to eq(1)
+          expect(other_queue_item2.reload.position).to eq(2)
+        end
+
+        it 'does not change the order when the position is not a number' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => 'a' },
+            { 'id' => queue_item2.id.to_s, 'position' => 'b' }
+          ]
+
+          expect(queue_item1.reload.position).to eq(1)
+          expect(queue_item2.reload.position).to eq(2)
+        end
+
+        it 'redirects to the my_queue_path' do
+          post :change, 'queue_item' => [
+            { 'id' => queue_item1.id.to_s, 'position' => '1' },
+            { 'id' => queue_item2.id.to_s, 'position' => '2' }
+          ]
+
+          expect(response).to redirect_to my_queue_path
+        end
+      end
+    end
+
+    context 'unauthenticated users' do
+      it 'redirects to the root_path for unauthenticated users' do
+        delete :destroy, id: queue_item.id
+
+        expect(response).to redirect_to root_path
+      end
+
+      it 'sets the flash message' do
+        delete :destroy, id: queue_item.id
+
+        expect(flash[:warning]).to be_present
+      end
+    end
+
+
   end
 
 end
