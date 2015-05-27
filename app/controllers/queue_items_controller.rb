@@ -13,13 +13,24 @@ class QueueItemsController < ApplicationController
 
   def destroy
     current_user.queue_items.find(params[:id]).destroy
-    QueueItem.update_positions(current_user)
+    QueueItem.normalize_positions(current_user)
     redirect_to my_queue_path
   end
 
   def change
-    QueueItem.change_positions(current_user, params[:queue_item])
+    change_positions(params[:queue_item])
     redirect_to my_queue_path
+  end
+
+  private
+
+  def change_positions(queue_items)
+    QueueItem.transaction do
+      queue_items.each do |hash|
+        QueueItem.find(hash['id']).update(position: hash['position'])
+      end
+      QueueItem.normalize_positions(current_user)
+    end
   end
 
 end

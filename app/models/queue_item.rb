@@ -19,17 +19,10 @@ class QueueItem < ActiveRecord::Base
     category.name
   end
 
-  def self.update_positions(user)
+  def self.normalize_positions(user)
     user.queue_items.order(:position).each_with_index do |queue_item, index|
       queue_item.update(position: index+1)
     end
-  end
-
-  def self.change_positions(user, queue_items)
-    queue_items.each do |hash|
-      QueueItem.find(hash['id']).update(position: hash['position'])
-    end
-    self.update_positions(user)
   end
 
   private
