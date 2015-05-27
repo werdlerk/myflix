@@ -10,8 +10,15 @@ class QueueItem < ActiveRecord::Base
   validates_numericality_of :position, only_integer: true, allow_blank: true
   validates_uniqueness_of :video, scope: :user
 
+  def review
+    Review.where(author: user, video: video).first
+  end
+
+  def review?
+    !!review
+  end
+
   def rating
-    review = Review.where(author: user, video: video).first
     review.rating if review
   end
 

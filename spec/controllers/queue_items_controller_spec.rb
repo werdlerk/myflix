@@ -175,77 +175,172 @@ describe QueueItemsController do
       let(:queue_item1) { Fabricate(:queue_item, video: video1, user: user, position: 1) }
       let(:queue_item2) { Fabricate(:queue_item, video: video2, user: user, position: 2) }
 
-      context 'valid input' do
-        it 'does not change the order when no changes are made' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => '1' },
-            { 'id' => queue_item2.id.to_s, 'position' => '2' }
-          ]
+      context 'change positions' do
+        context 'valid input' do
+          it 'does not change the order when no changes are made' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
 
-          expect(user.queue_items).to eq([queue_item1, queue_item2])
+            expect(user.queue_items).to eq([queue_item1, queue_item2])
+          end
+
+          it 'changes the position of the item with a different position' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '3' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
+
+            expect(user.queue_items).to eq([queue_item2, queue_item1])
+          end
+
+          it 'normalizes the position numbers' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '3' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
+
+            expect(queue_item2.reload.position).to eq(1)
+            expect(queue_item1.reload.position).to eq(2)
+          end
+
+          it 'redirects to the my_queue_path' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
+
+            expect(response).to redirect_to my_queue_path
+          end
         end
 
-        it 'changes the position of the item with a different position' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => '3' },
-            { 'id' => queue_item2.id.to_s, 'position' => '2' }
-          ]
+        context 'invalid input' do
+          it 'does not change the order of queue_items of someone else' do
+            other_user = Fabricate(:user, name:'second')
+            other_queue_item1 = Fabricate(:queue_item, video:video1, user:other_user, position:1)
+            other_queue_item2 = Fabricate(:queue_item, video:video2, user:other_user, position:2)
 
-          expect(user.queue_items).to eq([queue_item2, queue_item1])
-        end
+            post :change, 'queue_item' => [
+              { 'id' => other_queue_item1.id.to_s, 'position' => '3' },
+              { 'id' => other_queue_item2.id.to_s, 'position' => '4' }
+            ]
 
-        it 'normalizes the position numbers' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => '3' },
-            { 'id' => queue_item2.id.to_s, 'position' => '2' }
-          ]
+            expect(other_queue_item1.reload.position).to eq(1)
+            expect(other_queue_item2.reload.position).to eq(2)
+          end
 
-          expect(queue_item2.reload.position).to eq(1)
-          expect(queue_item1.reload.position).to eq(2)
-        end
+          it 'does not change the order when the position is not a number' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => 'a' },
+              { 'id' => queue_item2.id.to_s, 'position' => 'b' }
+            ]
 
-        it 'redirects to the my_queue_path' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => '1' },
-            { 'id' => queue_item2.id.to_s, 'position' => '2' }
-          ]
+            expect(queue_item1.reload.position).to eq(1)
+            expect(queue_item2.reload.position).to eq(2)
+          end
 
-          expect(response).to redirect_to my_queue_path
+          it 'redirects to the my_queue_path' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
+
+            expect(response).to redirect_to my_queue_path
+          end
         end
       end
 
-      context 'invalid input' do
-        it 'does not change the order of queue_items of someone else' do
-          other_user = Fabricate(:user, name:'second')
-          other_queue_item1 = Fabricate(:queue_item, video:video1, user:other_user, position:1)
-          other_queue_item2 = Fabricate(:queue_item, video:video2, user:other_user, position:2)
+      context 'change ratings' do
+        context 'valid input' do
+          it 'does not change ratings when no changes are made' do
+            review1 = Fabricate(:review, video: video1, author: user, rating: 1)
+            review2 = Fabricate(:review, video: video2, author: user, rating: 2)
 
-          post :change, 'queue_item' => [
-            { 'id' => other_queue_item1.id.to_s, 'position' => '1' },
-            { 'id' => other_queue_item2.id.to_s, 'position' => '2' }
-          ]
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '1' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2', 'rating' => '2' }
+            ]
 
-          expect(other_queue_item1.reload.position).to eq(1)
-          expect(other_queue_item2.reload.position).to eq(2)
+            expect(review1.reload.rating).to eq(1)
+            expect(review2.reload.rating).to eq(2)
+          end
+
+          it 'creates one review with the given rating' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '3' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+            ]
+
+            expect(Review.count).to eq(1)
+            expect(Review.first.rating).to eq(3)
+          end
+
+          it 'creates two reviews with the given ratings' do
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '3' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2', 'rating' => '4' }
+            ]
+
+            expect(Review.count).to eq(2)
+            expect(Review.second.rating).to eq(4)
+          end
+
+          it 'changes the rating of an existing review' do
+            review1 = Fabricate(:review, video: video1, author: user, rating: 1)
+            review2 = Fabricate(:review, video: video2, author: user, rating: 2)
+
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '3' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2', 'rating' => '4' }
+            ]
+
+            expect(review1.reload.rating).to eq(3)
+            expect(review2.reload.rating).to eq(4)
+          end
+
+          it 'redirects to my_queue_path' do
+            review1 = Fabricate(:review, video: video1, author: user, rating: 1)
+            review2 = Fabricate(:review, video: video2, author: user, rating: 2)
+
+            post :change, 'queue_item' => [
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '1' },
+              { 'id' => queue_item2.id.to_s, 'position' => '2', 'rating' => '2' }
+            ]
+
+            expect(response).to redirect_to my_queue_path
+          end
         end
 
-        it 'does not change the order when the position is not a number' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => 'a' },
-            { 'id' => queue_item2.id.to_s, 'position' => 'b' }
-          ]
+        context 'invalid input' do
+          it 'does not create the review for someone else' do
+            other_user = Fabricate(:user, name:'second')
+            other_queue_item1 = Fabricate(:queue_item, video:video1, user:other_user, position:1)
+            other_queue_item2 = Fabricate(:queue_item, video:video2, user:other_user, position:2)
 
-          expect(queue_item1.reload.position).to eq(1)
-          expect(queue_item2.reload.position).to eq(2)
-        end
+            post :change, 'queue_item' => [
+              { 'id' => other_queue_item1.id.to_s, 'position' => '3', 'rating' => '5' },
+              { 'id' => other_queue_item2.id.to_s, 'position' => '4', 'rating' => '5' }
+            ]
 
-        it 'redirects to the my_queue_path' do
-          post :change, 'queue_item' => [
-            { 'id' => queue_item1.id.to_s, 'position' => '1' },
-            { 'id' => queue_item2.id.to_s, 'position' => '2' }
-          ]
+            expect(Review.count).to eq(0)
+          end
 
-          expect(response).to redirect_to my_queue_path
+          it 'does not change the ratings of someone else\'s review' do
+            other_user = Fabricate(:user, name:'second')
+            other_queue_item1 = Fabricate(:queue_item, video:video1, user:other_user, position:1)
+            other_queue_item2 = Fabricate(:queue_item, video:video2, user:other_user, position:2)
+            review1 = Fabricate(:review, video: video1, author: other_user, rating: 3)
+            review2 = Fabricate(:review, video: video2, author: other_user, rating: 3)
+
+            post :change, 'queue_item' => [
+              { 'id' => other_queue_item1.id.to_s, 'position' => '3', 'rating' => '5' },
+              { 'id' => other_queue_item2.id.to_s, 'position' => '4', 'rating' => '5' }
+            ]
+
+            expect(review1.reload.rating).to eq(3)
+            expect(review2.reload.rating).to eq(3)
+          end
         end
       end
     end

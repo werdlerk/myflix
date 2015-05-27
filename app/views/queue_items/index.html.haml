@@ -23,7 +23,7 @@
                     = number_field_tag "queue_item[][position]", queue_item.position, class: 'form-control', min: 0, max: @queue_items.size+1
                   %td= link_to queue_item.video_title, video_path(queue_item.video)
                   %td= link_to "Play", nil, class: "btn btn-default"
-                  %td= queue_item.rating
+                  %td= select_tag 'queue_item[][rating]', options_for_select(rating_options, queue_item.rating), include_blank: true, class: 'form-control'
                   %td= link_to queue_item.category_name, category_path(queue_item.category)
                   %td
                     = link_to queue_item_path(queue_item), method: :delete, data: { confirm:'Are you sure you want to remove this item?' } do

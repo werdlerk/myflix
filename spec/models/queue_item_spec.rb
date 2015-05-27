@@ -21,6 +21,21 @@ describe QueueItem do
       end
     end
 
+    describe '#review' do
+      it 'returns the review from the video when it exists' do
+        review = Fabricate(:review, author: user, video: video, rating: 3)
+        queue_item = Fabricate(:queue_item, user:user, video:video)
+
+        expect(queue_item.review).to eq(review)
+      end
+
+      it 'returns nil when there is no review available of the video' do
+        queue_item = Fabricate(:queue_item, user:user, video:video)
+
+        expect(queue_item.review).to be_nil
+      end
+    end
+
     describe '#rating' do
       it 'returns the rating from the review when the review is present' do
         review = Fabricate(:review, author: user, video: video, rating: 3)
