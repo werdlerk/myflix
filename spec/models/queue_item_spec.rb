@@ -44,6 +44,69 @@ describe QueueItem do
       end
     end
 
+    describe 'update_positions' do
+      it 'does not give an error when there are no queue items' do
+        expect {
+          QueueItem.update_positions(user)
+        }.not_to raise_error
+      end
+
+      it 'does not give an error when there is one queue item' do
+        Fabricate(:queue_item, user:user, video:video)
+
+        expect {
+          QueueItem.update_positions(user)
+        }.not_to raise_error
+      end
+
+      it 'updates the positions of the queue items' do
+        category = Fabricate(:category, name: 'SciFi')
+        video1 = Fabricate(:video, category:category)
+        video2 = Fabricate(:video, category:category)
+        queue_item1 = Fabricate(:queue_item, user:user, video:video1)
+        queue_item2 = Fabricate(:queue_item, user:user, video:video2)
+        queue_item1.update(position: 5)
+        queue_item2.update(position: 3)
+
+        QueueItem.update_positions(user)
+
+        expect(queue_item1.reload.position).to eq(2)
+        expect(queue_item2.reload.position).to eq(1)
+      end
+    end
+
+    describe 'change_positions' do
+      it 'does not give an error when there are no queue items' do
+        expect {
+          QueueItem.change_positions(user, [])
+        }.not_to raise_error
+      end
+
+      it 'does not give an error when there is one queue item' do
+        queue_item = Fabricate(:queue_item, user:user, video:video)
+
+        expect {
+          QueueItem.change_positions(user, [{'id' => queue_item.id, 'position' => 5}])
+        }.not_to raise_error
+      end
+
+      it 'changes the positions of the queue items' do
+        category = Fabricate(:category, name: 'SciFi')
+        video1 = Fabricate(:video, category:category)
+        video2 = Fabricate(:video, category:category)
+        queue_item1 = Fabricate(:queue_item, user:user, video:video1)
+        queue_item2 = Fabricate(:queue_item, user:user, video:video2)
+
+        QueueItem.change_positions(user, [
+          { 'id' => queue_item1.id, 'position' => 5},
+          { 'id' => queue_item2.id, 'position' => 3}
+        ])
+
+        expect(queue_item1.reload.position).to eq(2)
+        expect(queue_item2.reload.position).to eq(1)
+      end
+    end
+
     describe '#category' do
       it 'returns the category of the video' do
         category = Fabricate(:category, name: 'SciFi')
