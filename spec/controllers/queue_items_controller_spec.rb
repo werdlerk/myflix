@@ -8,7 +8,7 @@ describe QueueItemsController do
   describe 'GET #index' do
 
     context 'authenticated users' do
-      before { request.session[:user_id] = user.id }
+      before { sign_in(user) }
 
       it 'sets the @queue_items variable to the queue items of the logged in user' do
         other_user = Fabricate(:user, name:'second')
@@ -45,7 +45,7 @@ describe QueueItemsController do
   describe 'POST #create' do
 
     context 'authenticated users' do
-      before { request.session[:user_id] = user.id }
+      before { sign_in(user) }
 
       it 'creates the QueueItem' do
         post :create, video_id: video.id
@@ -92,16 +92,8 @@ describe QueueItemsController do
     end
 
     context 'unauthenticated users' do
-      it 'redirects to the root_path for unauthenticated users' do
-        post :create, video_id: video.id
-
-        expect(response).to redirect_to root_path
-      end
-
-      it 'sets the flash message' do
-        post :create, video_id: video.id
-
-        expect(flash[:warning]).to be_present
+      it_behaves_like "require_user" do
+        let(:action) { post :create, video_id: video.id }
       end
     end
 
@@ -110,7 +102,7 @@ describe QueueItemsController do
   describe 'DELETE #destroy' do
 
     context 'authenticated users' do
-      before { request.session['user_id'] = user.id }
+      before { sign_in(user) }
 
       it 'destroys the queue_item' do
         delete :destroy, id: queue_item.id
@@ -151,24 +143,15 @@ describe QueueItemsController do
     end
 
     context 'unauthenticated users' do
-
-      it 'redirects to the root_path for unauthenticated users' do
-        delete :destroy, id: queue_item.id
-
-        expect(response).to redirect_to root_path
-      end
-
-      it 'sets the flash message' do
-        delete :destroy, id: queue_item.id
-
-        expect(flash[:warning]).to be_present
+      it_behaves_like "require_user" do
+        let(:action) { delete :destroy, id: queue_item.id }
       end
     end
   end
 
   describe 'POST #change' do
     context 'authenticated users' do
-      before { request.session['user_id'] = user.id }
+      before { sign_in user }
 
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }
@@ -345,20 +328,10 @@ describe QueueItemsController do
     end
 
     context 'unauthenticated users' do
-      it 'redirects to the root_path for unauthenticated users' do
-        delete :destroy, id: queue_item.id
-
-        expect(response).to redirect_to root_path
-      end
-
-      it 'sets the flash message' do
-        delete :destroy, id: queue_item.id
-
-        expect(flash[:warning]).to be_present
+      it_behaves_like "require_user" do
+        let(:action) { post :change }
       end
     end
-
-
   end
 
 end

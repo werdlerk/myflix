@@ -6,7 +6,7 @@ describe VideosController do
 
   describe 'GET #index' do
     it 'sets the @categories variable for authenticated users' do
-      request.session['user_id'] = user.id
+      sign_in(user)
 
       local_video = video
 
@@ -14,19 +14,17 @@ describe VideosController do
       expect(assigns(:categories)).to eq([local_video.category])
     end
 
-    it 'redirects to root path for unauthenticated users' do
-      local_video = video
-
-      get :index
-      expect(response).to redirect_to(root_path)
+    it_behaves_like "require_user" do
+      let(:action) { get :index }
     end
   end
 
   describe 'GET #show' do
     context 'authenticated users' do
+      let!(:review) { Fabricate(:review, video: video) }
+
       before do
-        request.session['user_id'] = user.id
-        Fabricate(:review, video: video)
+        sign_in(user)
         get :show, id: video.id
       end
 
@@ -43,25 +41,28 @@ describe VideosController do
     end
 
     context 'unauthenticated users' do
-      it 'redirects to root' do
-        get :show, id: video.id
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_user" do
+        let(:action) { get :show, id: video.id }
       end
     end
   end
 
   describe 'POST #search' do
-    it 'sets the @videos variable for authenticated users' do
-      request.session['user_id'] = user.id
-      mary_poppins = Fabricate(:video, title: 'Mary Poppins')
+    context 'authenticated users' do
+      before { sign_in user }
 
-      post :search, q:'oppin'
-      expect(assigns(:videos)).to eq([mary_poppins])
+      it 'sets the @videos variable' do
+        mary_poppins = Fabricate(:video, title: 'Mary Poppins')
+
+        post :search, q:'oppin'
+        expect(assigns(:videos)).to eq([mary_poppins])
+      end
     end
 
-    it 'redirects to root_path for unauthenticated users' do
-      post :search, q: 'Mary'
-      expect(response).to redirect_to root_path
+    context 'unauthenticated users' do
+      it_behaves_like "require_user" do
+        let(:action) { post :search, q: 'Mary' }
+      end
     end
   end
 

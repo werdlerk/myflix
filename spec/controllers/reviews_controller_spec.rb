@@ -8,7 +8,7 @@ describe ReviewsController do
 
     context 'authenticated users' do
 
-      before { request.session[:user_id] = user.id }
+      before { sign_in(user) }
 
       context 'with valid input' do
         before do
@@ -64,10 +64,8 @@ describe ReviewsController do
     end
 
     context 'unauthenticated users' do
-      it 'redirects to the root path' do
-        post :create, video_id: video.id, review: Fabricate.attributes_for(:review)
-
-        expect(response).to redirect_to root_path
+      it_behaves_like "require_user" do
+        let(:action) { post :create, video_id: video.id, review: Fabricate.attributes_for(:review) }
       end
     end
   end
