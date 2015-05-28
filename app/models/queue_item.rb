@@ -11,7 +11,7 @@ class QueueItem < ActiveRecord::Base
   validates_uniqueness_of :video, scope: :user
 
   def review
-    Review.where(author: user, video: video).first
+    @review ||= Review.where(author: user, video: video).first
   end
 
   def review?
@@ -20,6 +20,15 @@ class QueueItem < ActiveRecord::Base
 
   def rating
     review.rating if review
+  end
+
+  def rating=(new_rating)
+    if review?
+      review.update_column(:rating, new_rating)
+    else
+      review = Review.new(author: user, rating: new_rating, video: video)
+      review.save(validate: false)
+    end
   end
 
   def category_name

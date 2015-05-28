@@ -268,8 +268,7 @@ describe QueueItemsController do
 
           it 'creates one review with the given rating' do
             post :change, 'queue_item' => [
-              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '3' },
-              { 'id' => queue_item2.id.to_s, 'position' => '2' }
+              { 'id' => queue_item1.id.to_s, 'position' => '1', 'rating' => '3' }
             ]
 
             expect(Review.count).to eq(1)
