@@ -63,10 +63,8 @@ describe ReviewsController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { post :create, video_id: video.id, review: Fabricate.attributes_for(:review) }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { post :create, video_id: video.id, review: Fabricate.attributes_for(:review) }
     end
   end
 

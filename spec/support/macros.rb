@@ -1,3 +1,3 @@
-def sign_in(user)
-  request.session[:user_id] = user.id
+def sign_in(user = nil)
+  request.session[:user_id] = (user || Fabricate(:user)).id
 end

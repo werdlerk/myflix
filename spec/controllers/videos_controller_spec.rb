@@ -1,12 +1,11 @@
 require 'spec_helper'
 
 describe VideosController do
-  let(:user) { Fabricate(:user) }
   let(:video) { Fabricate(:video) }
 
   describe 'GET #index' do
     it 'sets the @categories variable for authenticated users' do
-      sign_in(user)
+      sign_in
 
       local_video = video
 
@@ -14,7 +13,7 @@ describe VideosController do
       expect(assigns(:categories)).to eq([local_video.category])
     end
 
-    it_behaves_like "require_user" do
+    it_behaves_like "requires sign in" do
       let(:action) { get :index }
     end
   end
@@ -24,7 +23,7 @@ describe VideosController do
       let!(:review) { Fabricate(:review, video: video) }
 
       before do
-        sign_in(user)
+        sign_in
         get :show, id: video.id
       end
 
@@ -40,16 +39,14 @@ describe VideosController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { get :show, id: video.id }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { get :show, id: video.id }
     end
   end
 
   describe 'POST #search' do
     context 'authenticated users' do
-      before { sign_in user }
+      before { sign_in }
 
       it 'sets the @videos variable' do
         mary_poppins = Fabricate(:video, title: 'Mary Poppins')
@@ -59,10 +56,8 @@ describe VideosController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { post :search, q: 'Mary' }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { post :search, q: 'Mary' }
     end
   end
 

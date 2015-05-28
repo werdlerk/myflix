@@ -8,7 +8,7 @@ describe QueueItemsController do
   describe 'GET #index' do
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { sign_in user }
 
       it 'sets the @queue_items variable to the queue items of the logged in user' do
         other_user = Fabricate(:user, name:'second')
@@ -27,18 +27,8 @@ describe QueueItemsController do
 
     end
 
-    context 'unauthenticated users' do
-      it 'sets the flash message' do
-        get :index
-
-        expect(flash[:warning]).to be_present
-      end
-
-      it 'redirects to root_path' do
-        get :index
-
-        expect(response).to redirect_to root_path
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { get :index }
     end
   end
 
@@ -91,10 +81,8 @@ describe QueueItemsController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { post :create, video_id: video.id }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { post :create, video_id: video.id }
     end
 
   end
@@ -142,10 +130,8 @@ describe QueueItemsController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { delete :destroy, id: queue_item.id }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { delete :destroy, id: queue_item.id }
     end
   end
 
@@ -327,10 +313,8 @@ describe QueueItemsController do
       end
     end
 
-    context 'unauthenticated users' do
-      it_behaves_like "require_user" do
-        let(:action) { post :change }
-      end
+    it_behaves_like "requires sign in" do
+      let(:action) { post :change }
     end
   end
 
