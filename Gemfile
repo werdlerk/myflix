@@ -34,6 +34,7 @@ group :test do
   gem 'guard-rspec'
   gem 'terminal-notifier-guard'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do
