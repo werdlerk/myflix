@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
 
   validates_presence_of :email, :password, :name
   validates :email, uniqueness: true
+
+  def queued_video?(video)
+    queue_items.map(&:video).include?(video)
+  end
 end

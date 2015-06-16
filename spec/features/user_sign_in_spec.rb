@@ -1,15 +1,10 @@
 require "spec_helper"
 
 feature 'User signs in' do
-  background do
-    Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe")
-  end
+  given(:user) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
 
   scenario 'with valid email and password' do
-    visit login_path
-    fill_in "Email Address", with: "john@example.com"
-    fill_in "Password", with: "Password"
-    click_button "Sign in"
+    log_in_user(user)
 
     expect(page).to have_content "John Doe"
   end

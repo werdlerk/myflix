@@ -1,84 +1,64 @@
 require "spec_helper"
 
-feature 'My Queue'do
-  given(:user) { Fabricate(:user) }
-  given(:video) { Fabricate(:video, title: "Lord of the Rings") }
-  given!(:video2) { Fabricate(:video, title: "Friends")}
-  given!(:video3) { Fabricate(:video, title: "The Office")}
-  given!(:video4) { Fabricate(:video, title: "Dharma and Greg")}
+feature 'My Queue' do
+  given!(:category) { Fabricate(:category, name: "My Category") }
+  given!(:video) { Fabricate(:video, title: "Lord of the Rings", category: category) }
+  given!(:video2) { Fabricate(:video, title: "Friends", category: category)}
+  given!(:video3) { Fabricate(:video, title: "The Office", category: category)}
+  given!(:video4) { Fabricate(:video, title: "Dharma and Greg", category: category)}
 
-  background do
-    visit login_path
-    fill_in "Email Address", with: user.email
-    fill_in "Password", with: user.password
-    click_button "Sign in"
+  background { log_in_user }
 
-    expect(page).to have_content user.name
-  end
-
-  scenario 'add videos to my queue' do
-    visit video_path(video)
-    expect(page).to have_content video.title
-
-    click_link "+ My Queue"
-    expect(page).to have_content "My Queue"
-    expect(page).to have_content "List Order"
-    expect(page).to have_content video.title
+  scenario 'add and reorder videos in my queue' do
+    add_video_to_queue(video)
+    expect_video_in_queue(video)
 
     click_link video.title
-    expect(page).to have_link "Watch Now"
-    expect(page).to have_content video.title
-    expect(page).to have_no_link "+ My Queue"
+    expect_no_link "+ My Queue"
 
-    visit videos_path
-    expect(page).to have_content video.category.name
+    add_video_to_queue(video2)
+    expect_video_in_queue(video2)
 
-    click_link "video_#{video2.title.parameterize}"
-    expect(page).to have_content video2.title
+    add_video_to_queue(video3)
+    expect_video_in_queue(video3)
 
-    click_link "+ My Queue"
-    expect(page).to have_content "My Queue"
-    expect(page).to have_content "List Order"
-    expect(page).to have_content video2.title
+    expect_video_position(video, 1)
+    expect_video_position(video2, 2)
+    expect_video_position(video3, 3)
 
-    visit videos_path
-
-    click_link "video_#{video3.title.parameterize}"
-    expect(page).to have_content video3.title
-
-    click_link "+ My Queue"
-    expect(page).to have_content "My Queue"
-    expect(page).to have_content "List Order"
-    expect(page).to have_content video3.title
-
-    within("form table tbody") do
-      expect(page.all("input.form-control[name='queue_item[][position]']")[0].value).to eq "1"
-      expect(page.all("#video_link")[0].text).to eq "Lord of the Rings"
-
-      expect(page.all("input.form-control[name='queue_item[][position]']")[1].value).to eq "2"
-      expect(page.all("#video_link")[1].text).to eq "Friends"
-
-      expect(page.all("input.form-control[name='queue_item[][position]']")[2].value).to eq "3"
-      expect(page.all("#video_link")[2].text).to eq "The Office"
-    end
-
-    within("form table tbody") do
-      page.all("tr")[0].fill_in("queue_item__position", with:"3")
-      page.all("tr")[1].fill_in("queue_item__position", with:"2")
-      page.all("tr")[2].fill_in("queue_item__position", with:"1")
-    end
+    set_video_position(video, 3)
+    set_video_position(video2, 2)
+    set_video_position(video3, 1)
     find("input.btn[name=commit]").click
 
-    within("form table tbody") do
-      expect(page.all("input.form-control[name='queue_item[][position]']")[0].value).to eq "1"
-      expect(page.all("#video_link")[0].text).to eq "The Office"
+    expect_video_position(video, 3)
+    expect_video_position(video2, 2)
+    expect_video_position(video3, 1)
+  end
 
-      expect(page.all("input.form-control[name='queue_item[][position]']")[1].value).to eq "2"
-      expect(page.all("#video_link")[1].text).to eq "Friends"
+  def expect_video_in_queue(video)
+    expect(page).to have_content video.title
+  end
 
-      expect(page.all("input.form-control[name='queue_item[][position]']")[2].value).to eq "3"
-      expect(page.all("#video_link")[2].text).to eq "Lord of the Rings"
+  def expect_no_link(link_text)
+    expect(page).to have_no_link link_text
+  end
+
+  def add_video_to_queue(video)
+    visit videos_path
+    find("a[href='#{video_path(video)}']").click
+    expect(page).to have_content video.title
+    click_link "+ My Queue"
+  end
+
+  def set_video_position(video, position)
+    within(:xpath, "//tr[contains(.,'#{video.title}')]") do
+      fill_in 'queue_item[][position]', with:position.to_s
     end
+  end
+
+  def expect_video_position(video, position)
+    expect(find(:xpath, "//tr[contains(.,'#{video.title}')]//input[@type='number']").value).to eq position.to_s
   end
 
 end

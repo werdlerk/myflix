@@ -15,7 +15,7 @@
         #{simple_format(@video.description)}
         .actions
           %a.btn.btn-primary(href="") Watch Now
-          - unless current_user.queue_items.map(&:video).include?(@video)
+          - unless current_user.queued_video?(@video)
             = link_to "+ My Queue", queue_items_path(video_id: @video.id), class:'btn btn-default', method: :post
 
 %section.reviews.container
