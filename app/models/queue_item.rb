@@ -11,7 +11,7 @@ class QueueItem < ActiveRecord::Base
   validates_uniqueness_of :video, scope: :user
 
   def review
-    @review ||= Review.where(author: user, video: video).first
+    @review ||= Review.find_by(author: user, video: video)
   end
 
   def review?
