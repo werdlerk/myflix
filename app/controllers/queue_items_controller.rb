@@ -7,29 +7,31 @@ class QueueItemsController < ApplicationController
 
   def create
     video = Video.find(params[:video_id])
-    queue_video(video)
+    QueueItem.create(video: video, user: current_user)
     redirect_to my_queue_path
   end
 
   def destroy
     current_user.queue_items.find(params[:id]).destroy
-    update_order(current_user.queue_items.order(:order))
+    QueueItem.normalize_positions(current_user)
+    redirect_to my_queue_path
+  end
+
+  def change
+    update_queue_items(params[:queue_item])
+    QueueItem.normalize_positions(current_user)
     redirect_to my_queue_path
   end
 
   private
 
-    def queue_video(video)
-      QueueItem.create(video: video, user: current_user) unless already_queued_video? video
-    end
-
-    def already_queued_video?(video)
-      QueueItem.exists?(user: current_user, video_id: video.id)
-    end
-
-    def update_order(queue_items)
-      queue_items.each_with_index do |queue_item, index|
-        queue_item.update(order: index+1)
+  def update_queue_items(queue_items)
+    QueueItem.transaction do
+      queue_items.each do |hash|
+        queue_item = QueueItem.find(hash['id'])
+        queue_item.update_attributes(position: hash['position'], rating: hash['rating']) if queue_item.user == current_user
       end
     end
+  end
+
 end

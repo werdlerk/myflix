@@ -31,6 +31,10 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers', require: false
   gem 'database_cleaner', '1.2.0'
+  gem 'guard-rspec'
+  gem 'terminal-notifier-guard'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do
