@@ -52,4 +52,40 @@ describe UsersController do
     end
   end
 
+  describe "GET #show" do
+    let(:user) { Fabricate(:user) }
+
+    context "authenticated users" do
+      before do
+        sign_in
+        get :show, id: user.id
+      end
+
+      context "user exists" do
+        it "should set the @user variable" do
+          expect(assigns(:user)).to eq(user)
+        end
+
+        it "should render the user profile page" do
+          expect(response).to render_template 'show'
+        end
+      end
+
+      context "non-existant user" do
+        it "should return a RecordNotFound Exceptino" do
+          expect {
+            get :show, id: 123
+          }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+    end
+
+    context "unauthenticated users" do
+      it_behaves_like "requires sign in" do
+        let(:action) { get :show, id: user.id }
+      end
+    end
+
+  end
+
 end

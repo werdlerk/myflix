@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :redirect_users_to_home
+  before_action :redirect_users_to_home, only: [:new, :create]
+  before_action :require_user, only: [:show]
 
   def new
     @user = User.new
@@ -14,6 +15,10 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
   end
 
   private
