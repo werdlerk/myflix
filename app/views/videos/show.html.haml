@@ -48,6 +48,6 @@
                   %span Rating: #{review.rating} / 5
                   %p
                     by
-                    = link_to review.author.name, user_path(review.author)
+                    = link_to review.author.name, review.author
                 .col-sm-8
                   #{simple_format(review.text)}

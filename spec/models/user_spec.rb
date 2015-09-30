@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe User do
   context 'relations' do
-    it { should have_many(:reviews) }
+    it { should have_many(:reviews).order(:created_at) }
     it { should have_many(:queue_items).order(:position) }
   end
 
