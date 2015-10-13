@@ -7,7 +7,7 @@
           %h2 #{@user.name}'s video collection (#{@user.queue_items.size})
 
           - if @user != current_user
-            - if current_user.followers.include? @user
+            - if current_user.leaders.include? @user
               = link_to "Stop following", current_user.following_relationships.find_by(leader: @user), method: :delete, 'data-confirm' => "Are you sure you want to stop following #{@user.name}?", class: 'btn btn-default'
             - else
               = link_to "Follow", follow_relationships_path(leader_id: @user.id), method: :post, class: 'btn btn-default'

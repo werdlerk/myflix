@@ -99,7 +99,7 @@ describe RelationshipsController do
         expect(flash[:success]).to be_present
       end
 
-      it 'throws an ActiveRecord::RecordNotFound exception when the relationship isnt owned by the user' do
+      it 'throws an ActiveRecord::RecordNotFound exception when the user isnt the follower in the given relationship' do
         expect {
           delete :destroy, id: relationship2.id
         }.to raise_error(ActiveRecord::RecordNotFound)
@@ -107,7 +107,7 @@ describe RelationshipsController do
 
       it 'throws an ActiveRecord::RecordNotFound exception when the relationship cant be found' do
         expect {
-          delete :destroy, id: 99
+          delete :destroy, id: relationship2.id + 10
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
