@@ -26,10 +26,10 @@ Myflix::Application.routes.draw do
     end
   end
 
-  resources :followships, only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
 
   get 'my_queue', to: 'queue_items#index'
-  get 'people', to: 'followships#index'
+  get 'people', to: 'relationships#index'
 
   # Mockups
   get 'ui(/:action)', controller: 'ui'

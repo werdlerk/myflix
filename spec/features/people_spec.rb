@@ -25,7 +25,7 @@ feature 'People page' do
   end
 
   scenario 'stop following bob' do
-    Fabricate(:followship, user: john, follower: bob)
+    Fabricate(:relationship, user: john, follower: bob)
 
     visit people_path
 

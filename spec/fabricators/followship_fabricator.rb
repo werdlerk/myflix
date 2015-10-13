@@ -1,2 +1,0 @@
-Fabricator(:followship) do
-end
