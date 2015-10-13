@@ -16,8 +16,8 @@
             = link_to followship.follower do
               = image_tag followship.follower.gravatar_image
             = link_to followship.follower.name, followship.follower
-          %td.extra-padding= followship.follower.queue_items.size
-          %td.extra-padding= followship.follower.followers.size
+          %td.extra-padding= followship.follower.queue_items.count
+          %td.extra-padding= followship.follower.followers.count
           %td.extra-padding
             = link_to followship, method: :delete, 'data-confirm' => "Are you sure you want to stop following #{followship.follower.name}?" do
               %i.glyphicon.glyphicon-remove
