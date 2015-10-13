@@ -1,0 +1,2 @@
+Fabricator(:followship) do
+end

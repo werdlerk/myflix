@@ -3,9 +3,14 @@
     .col-sm-10.col-sm-offset-1
       %article
         %header
-          = image_tag "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(@user.email.downcase)}?s=40"
+          = image_tag @user.gravatar_image
           %h2 #{@user.name}'s video collection (#{@user.queue_items.size})
-          %button.btn.btn-default Follow
+
+          - if @user != current_user
+            - if current_user.followers.include? @user
+              = link_to "Stop following", current_user.followships.find_by(follower: @user), method: :delete, 'data-confirm' => "Are you sure you want to stop following #{@user.name}?", class: 'btn btn-default'
+            - else
+              = link_to "Follow", followships_path(follower_id: @user.id), method: :post, class: 'btn btn-default'
         %table.table
           %thead
             %tr

@@ -1,6 +1,6 @@
 require "spec_helper"
 
-feature 'User signs in' do
+feature 'User profile' do
   given(:john) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
   given(:bob) { Fabricate(:user, email: "bob@codefish.org", password: "Test123", name: "Bob Hope") }
   given!(:video1) { Fabricate(:video) }
