@@ -4,8 +4,10 @@ describe User do
   context 'relations' do
     it { should have_many(:reviews).order(:created_at) }
     it { should have_many(:queue_items).order(:position) }
-    it { should have_many(:relationships) }
-    it { should have_many(:followers).through(:relationships) }
+    it { should have_many(:following_relationships).class_name('Relationship').with_foreign_key(:follower_id) }
+    it { should have_many(:followers).through(:following_relationships) }
+    it { should have_many(:leading_relationships).class_name('Relationship').with_foreign_key(:leader_id) }
+    it { should have_many(:leaders).through(:leading_relationships) }
   end
 
   context 'validations' do

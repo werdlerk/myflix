@@ -4,8 +4,6 @@ feature 'People page' do
   given(:john) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
   given(:bob) { Fabricate(:user, email: "bob@codefish.org", password: "Test123", name: "Bob Hope") }
   given!(:video1) { Fabricate(:video) }
-  given!(:video2) { Fabricate(:video) }
-  given!(:video3) { Fabricate(:video) }
   given!(:review1) { Fabricate(:review, video: video1, author: bob) }
 
   background { log_in_user john }
@@ -25,7 +23,7 @@ feature 'People page' do
   end
 
   scenario 'stop following bob' do
-    Fabricate(:relationship, user: john, follower: bob)
+    Fabricate(:relationship, leader: bob, follower: john)
 
     visit people_path
 

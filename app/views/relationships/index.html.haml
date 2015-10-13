@@ -13,11 +13,11 @@
       - @relationships.each do |relationship|
         %tr
           %td
-            = link_to relationship.follower do
-              = image_tag relationship.follower.gravatar_image
-            = link_to relationship.follower.name, relationship.follower
-          %td.extra-padding= relationship.follower.queue_items.count
-          %td.extra-padding= relationship.follower.followers.count
+            = link_to relationship.leader do
+              = image_tag relationship.leader.gravatar_image
+            = link_to relationship.leader.name, relationship.leader
+          %td.extra-padding= relationship.leader.queue_items.count
+          %td.extra-padding= relationship.leader.leading_relationships.count
           %td.extra-padding
-            = link_to relationship, method: :delete, 'data-confirm' => "Are you sure you want to stop following #{relationship.follower.name}?" do
+            = link_to relationship, method: :delete, 'data-confirm' => "Are you sure you want to stop following #{relationship.leader.name}?" do
               %i.glyphicon.glyphicon-remove

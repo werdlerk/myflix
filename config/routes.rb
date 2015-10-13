@@ -26,7 +26,11 @@ Myflix::Application.routes.draw do
     end
   end
 
-  resources :relationships, only: [:create, :destroy]
+  resources :relationships, only: [:destroy] do
+    collection do
+      post :follow
+    end
+  end
 
   get 'my_queue', to: 'queue_items#index'
   get 'people', to: 'relationships#index'

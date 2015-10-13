@@ -1,8 +1,13 @@
 class User < ActiveRecord::Base
   has_many :reviews, -> { order(:created_at).reverse_order }
   has_many :queue_items, -> { order(:position) }
-  has_many :relationships
-  has_many :followers, through: :relationships
+
+  has_many :following_relationships, class_name: Relationship, foreign_key: :follower_id
+  has_many :followers, through: :following_relationships
+
+  has_many :leading_relationships, class_name: Relationship, foreign_key: :leader_id
+  has_many :leaders, through: :leading_relationships
+
 
   has_secure_password(validations: false)
 
