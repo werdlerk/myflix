@@ -5,7 +5,7 @@ class RelationshipsController < ApplicationController
     @relationships = current_user.following_relationships
   end
 
-  def follow
+  def create
     leader = User.find(params[:leader_id])
     relationship = current_user.following_relationships.build(leader: leader)
 

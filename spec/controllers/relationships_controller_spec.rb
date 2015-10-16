@@ -35,35 +35,35 @@ describe RelationshipsController do
     end
   end
 
-  describe 'POST #follow' do
+  describe 'POST #create' do
     it_behaves_like "requires sign in" do
-      let(:action) { post :follow, leader_id: 1 }
+      let(:action) { post :create, leader_id: 1 }
     end
 
     context 'authenticated users' do
       before { sign_in(user) }
 
       it 'creates the Relationship' do
-        post :follow, leader_id: john.id
+        post :create, leader_id: john.id
 
         expect(Relationship.count).to eq 1
       end
 
       it 'redirects to the people page' do
-        post :follow, leader_id: john.id
+        post :create, leader_id: john.id
 
         expect(response).to redirect_to people_path
       end
 
       it 'shows a flash message' do
-        post :follow, leader_id: john.id
+        post :create, leader_id: john.id
 
         expect(flash[:success]).to be_present
       end
 
       it 'throws an ActiveRecord::RecordNotFound exception when the user cant be found' do
         expect {
-          post :follow, leader_id: 99
+          post :create, leader_id: 99
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end

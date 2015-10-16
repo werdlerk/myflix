@@ -10,7 +10,7 @@
             - if current_user.leaders.include? @user
               = link_to "Stop following", current_user.following_relationships.find_by(leader: @user), method: :delete, 'data-confirm' => "Are you sure you want to stop following #{@user.name}?", class: 'btn btn-default'
             - else
-              = link_to "Follow", follow_relationships_path(leader_id: @user.id), method: :post, class: 'btn btn-default'
+              = link_to "Follow", relationships_path(leader_id: @user.id), method: :post, class: 'btn btn-default'
         %table.table
           %thead
             %tr
