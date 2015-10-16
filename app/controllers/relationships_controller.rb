@@ -9,7 +9,7 @@ class RelationshipsController < ApplicationController
     leader = User.find(params[:leader_id])
     relationship = current_user.following_relationships.build(leader: leader)
 
-    if relationship.save
+    if leader != current_user && relationship.save
       flash[:success] = "You've started following #{leader.name}."
     else
       flash[:warning] = "Woops, something went wrong!"
