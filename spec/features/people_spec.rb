@@ -8,18 +8,29 @@ feature 'People page' do
 
   background { log_in_user john }
 
-  scenario "start following bob" do
-    visit video_path(video1)
-    expect(page).to have_content "Bob Hope"
+  scenario "start following bob, visit people page and unfollow bob" do
+    visit root_path
+    within(:css, "article.video_category .video") do
+      find(:css, "a").click
+    end
 
+    expect(page).to have_content video1.title
+    expect(page).to have_content "Rating: #{review1.rating} / 5"
+    expect(page).to have_content "by #{bob.name}"
     click_link "Bob Hope"
-    expect(page).to have_link "Follow"
+
+    expect(page).to have_content "#{bob.name}'s video collection"
     click_link "Follow"
 
     expect(page).to have_content "You've started following Bob Hope."
     expect(page).to have_content "People I Follow"
-
     expect(page).to have_link "Bob Hope"
+
+    within(:css, "table.table > tbody > tr td:last-child") do
+      find(:css, "a").click
+    end
+
+    expect(page).to have_content "You've stopped following #{bob.name}."
   end
 
   scenario 'stop following bob' do
@@ -30,9 +41,9 @@ feature 'People page' do
     expect(page).to have_content "People I Follow"
     expect(page).to have_link "Bob Hope"
 
-    within(:css, "table.table tr td:last-child") {
+    within(:css, "table.table tr td:last-child") do
       find(:css, "a").click
-    }
+    end
 
     expect(page).to have_content "You've stopped following Bob Hope."
   end
