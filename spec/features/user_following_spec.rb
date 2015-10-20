@@ -1,6 +1,6 @@
 require "spec_helper"
 
-feature 'People page' do
+feature 'User following' do
   given(:john) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
   given(:bob) { Fabricate(:user, email: "bob@codefish.org", password: "Test123", name: "Bob Hope") }
   given!(:video1) { Fabricate(:video) }
@@ -10,25 +10,20 @@ feature 'People page' do
 
   scenario "start following bob, visit people page and unfollow bob" do
     visit root_path
-    within(:css, "article.video_category .video") do
-      find(:css, "a").click
-    end
+    click_on_video_on_home_page(video1)
 
     expect(page).to have_content video1.title
     expect(page).to have_content "Rating: #{review1.rating} / 5"
     expect(page).to have_content "by #{bob.name}"
-    click_link "Bob Hope"
+    click_link bob.name
 
     expect(page).to have_content "#{bob.name}'s video collection"
     click_link "Follow"
 
     expect(page).to have_content "You've started following Bob Hope."
     expect(page).to have_content "People I Follow"
-    expect(page).to have_link "Bob Hope"
-
-    within(:css, "table.table > tbody > tr td:last-child") do
-      find(:css, "a").click
-    end
+    expect(page).to have_link bob.name
+    unfollow(bob)
 
     expect(page).to have_content "You've stopped following #{bob.name}."
   end
@@ -39,13 +34,14 @@ feature 'People page' do
     visit people_path
 
     expect(page).to have_content "People I Follow"
-    expect(page).to have_link "Bob Hope"
+    expect(page).to have_link bob.name
+    unfollow(bob)
 
-    within(:css, "table.table tr td:last-child") do
-      find(:css, "a").click
-    end
+    expect(page).to have_content "You've stopped following #{bob.name}."
+  end
 
-    expect(page).to have_content "You've stopped following Bob Hope."
+  def unfollow(user)
+    find("a[data-method='delete']").click
   end
 
 
