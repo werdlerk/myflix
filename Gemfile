@@ -11,6 +11,8 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'pg'
 
+gem 'figaro'
+
 # has_secure_password
 gem 'bcrypt'
 
