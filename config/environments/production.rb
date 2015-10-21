@@ -25,7 +25,7 @@ Myflix::Application.configure do
     domain:               'gmail.com',
     user_name:            ENV["GMAIL_USERNAME"],
     password:             ENV["GMAIL_PASSWORD"],
-    authentication:       'login',
+    authentication:       'plain',
     enable_starttls_auto: true
   }
 end
