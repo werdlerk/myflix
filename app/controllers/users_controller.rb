@@ -11,6 +11,8 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:success] = "Welcome, #{@user.name}! Your account has been created, please login below."
+      UserMailer.send_welcome(@user).deliver
+
       redirect_to login_path
     else
       render 'new'

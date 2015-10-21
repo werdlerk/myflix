@@ -31,6 +31,10 @@ describe UsersController do
       it 'should redirect to the login page with the flash message' do
         expect(response).to redirect_to login_path
       end
+
+      it 'sends a welcome email' do
+        expect(ActionMailer::Base.deliveries.count).to eq 1
+      end
     end
 
     context "with invalid input" do
