@@ -21,5 +21,9 @@ describe UserMailer do
     it 'uses the users email address in the email' do
       expect(mail.body.encoded).to match(user.email)
     end
+
+    it 'uses the users name in the email' do
+      expect(mail.body.encoded).to match(user.name)
+    end
   end
 end

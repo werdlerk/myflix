@@ -17,10 +17,10 @@ describe UsersController do
   end
 
   describe 'POST #create' do
+    after { ActionMailer::Base.deliveries.clear }
 
     context "with valid input" do
       before do
-        ActionMailer::Base.deliveries.clear
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -45,7 +45,7 @@ describe UsersController do
 
         it "has the right content" do
           email = ActionMailer::Base.deliveries.last
-          expect(email.body.encoded).to include "Your account has been succesfully created"
+          expect(email.body.encoded).to include User.first.name
         end
       end
 
@@ -66,6 +66,10 @@ describe UsersController do
 
       it 'sets the @user variable' do
         expect(assigns(:user)).to be_a_new(User)
+      end
+
+      it 'does not send an email' do
+        expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
   end
