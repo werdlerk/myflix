@@ -20,6 +20,7 @@ describe UsersController do
 
     context "with valid input" do
       before do
+        ActionMailer::Base.deliveries.clear
         post :create, user: Fabricate.attributes_for(:user)
       end
 
@@ -32,9 +33,22 @@ describe UsersController do
         expect(response).to redirect_to login_path
       end
 
-      it 'sends a welcome email' do
-        expect(ActionMailer::Base.deliveries.count).to eq 1
+      context 'send welcome email' do
+        it 'sends an email' do
+          expect(ActionMailer::Base.deliveries.count).to eq 1
+        end
+
+        it 'sends to the right recipient' do
+          message = ActionMailer::Base.deliveries.last
+          expect(message.to).to eq [ User.first.email ]
+        end
+
+        it "has the right content" do
+          email = ActionMailer::Base.deliveries.last
+          expect(email.body.encoded).to include "Your account has been succesfully created"
+        end
       end
+
     end
 
     context "with invalid input" do
