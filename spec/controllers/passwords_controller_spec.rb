@@ -37,13 +37,24 @@ describe PasswordsController do
       end
     end
 
-    context 'with invalid input' do
+    context 'with empty input' do
+      before { post :create, email: '' }
+      
       it 'does not send a reset password email if no email is given' do
-        post :create
-
         expect(ActionMailer::Base.deliveries).to be_empty
       end
 
+      it 'renders the new template' do
+        expect(response).to render_template 'new'
+      end
+
+      it 'shows the flash error message' do
+        expect(flash[:warning]).to be_present
+      end
+      
+    end
+
+    context 'with invalid input' do
       it 'does not send a reset password email if the email is invalid' do
         post :create, email: 'bla'
 
