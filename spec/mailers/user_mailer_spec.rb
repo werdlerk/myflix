@@ -2,9 +2,9 @@ require "spec_helper"
 
 describe UserMailer do
 
-  describe '#send_welcome' do
+  describe '#welcome' do
     let(:user) { Fabricate(:user) }
-    let(:mail) { UserMailer.send_welcome(user) }
+    let(:mail) { UserMailer.welcome(user) }
 
     it 'renders the subject' do
       expect(mail.subject).to eq "Welcome to MyFliX"
@@ -27,9 +27,9 @@ describe UserMailer do
     end
   end
 
-  describe '#send_reset_password' do
+  describe '#reset_password' do
       let(:user) { Fabricate(:user) }
-      let(:mail) { UserMailer.send_reset_password(user) }
+      let(:mail) { UserMailer.reset_password(user) }
 
       it 'renders the subject' do
         expect(mail.subject).to eq "Reset password"
