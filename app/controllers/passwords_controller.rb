@@ -23,7 +23,8 @@ class PasswordsController < ApplicationController
   def update
     user = User.find_by(reset_token: params[:token])
     user.password = params[:password]
-    user.reset_token_expiration = DateTime.now
+    user.reset_token = nil
+    user.reset_token_expiration = nil
     user.save!
 
     flash[:success] = "Your password has been changed. You can now login with the new password."

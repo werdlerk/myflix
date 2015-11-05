@@ -129,7 +129,7 @@ describe PasswordsController do
       end
 
       it 'invalidates the token' do
-        expect(user.reload.reset_token_expiration).to be < DateTime.now
+        expect(user.reload.reset_token).to be_nil
       end
 
       it 'redirects to the login page' do
