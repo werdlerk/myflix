@@ -17,9 +17,6 @@ class PasswordsController < ApplicationController
     end
   end
 
-  def edit
-  end
-  
   def update
     user = User.find_by(reset_token: params[:token])
     user.password = params[:password]
