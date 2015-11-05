@@ -15,7 +15,7 @@ describe UserMailer do
     end
 
     it 'renders the sender email' do
-      expect(mail.from).to eql [ "werdlerk@gmail.com" ]
+      expect(mail.from).to eql [ "info@myflix.com" ]
     end
 
     it 'uses the users email address in the email' do
@@ -40,7 +40,7 @@ describe UserMailer do
       end
 
       it 'renders the sender email' do
-        expect(mail.from).to eq [ "werdlerk@gmail.com" ]
+        expect(mail.from).to eq [ "info@myflix.com" ]
       end
       
       it 'sends the reset password url in the email' do
