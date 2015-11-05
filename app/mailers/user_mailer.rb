@@ -7,4 +7,10 @@ class UserMailer < ActionMailer::Base
          subject: 'Welcome to MyFliX'
   end
 
+  def send_reset_password(user)
+    @user = user
+    mail to: %("#{@user.name}" <#{@user.email}>),
+         subject: 'Reset password'
+  end
+
 end

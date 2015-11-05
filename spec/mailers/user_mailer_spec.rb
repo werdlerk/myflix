@@ -26,4 +26,29 @@ describe UserMailer do
       expect(mail.body.encoded).to match(user.name)
     end
   end
+
+  describe '#send_reset_password' do
+      let(:user) { Fabricate(:user) }
+      let(:mail) { UserMailer.send_reset_password(user) }
+
+      it 'renders the subject' do
+        expect(mail.subject).to eq "Reset password"
+      end
+
+      it 'renders the receiver email' do
+        expect(mail.to).to eq [ user.email ]
+      end
+
+      it 'renders the sender email' do
+        expect(mail.from).to eq [ "werdlerk@gmail.com" ]
+      end
+      
+      it 'sends the reset password url in the email' do
+        expect(mail.body.encoded).to match(reset_password_url)
+      end
+
+      it 'uses the users name in the email' do
+        expect(mail.body.encoded).to match(user.name)
+      end
+  end
 end

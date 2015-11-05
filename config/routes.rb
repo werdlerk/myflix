@@ -8,6 +8,10 @@ Myflix::Application.routes.draw do
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'
+  get 'forgot_password', to: 'passwords#new'
+  post 'forgot_password', to: 'passwords#create'
+  get 'reset_password', to: 'passwords#edit'
+  put 'reset_password', to: 'passwords#update'
 
   resources :users, only: [:show]
 

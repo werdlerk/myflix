@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
 
   has_secure_password(validations: false)
 
-  validates_presence_of :email, :password, :name
+  validates_presence_of :email, :name
+  validates_presence_of :password, on: :create
   validates :email, uniqueness: true
 
   def gravatar_image
