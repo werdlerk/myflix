@@ -1,5 +1,5 @@
 class PasswordsController < ApplicationController
-  before_action :redirect_users_to_home
+  before_action :disallow_authenticated_users
   before_action :require_valid_token, only: [:edit, :update]
 
   def create

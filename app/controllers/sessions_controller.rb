@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :redirect_users_to_home, only: [:new, :create]
+  before_action :disallow_authenticated_users, only: [:new, :create]
 
   def new
     redirect_to home_path if user_logged_in?
