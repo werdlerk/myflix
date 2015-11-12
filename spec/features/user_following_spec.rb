@@ -8,7 +8,7 @@ feature 'User following' do
 
   background { log_in_user john }
 
-  scenario "start following bob, visit people page and unfollow bob" do
+  scenario "user can follow and unfollow bob" do
     visit root_path
     click_on_video_on_home_page(video1)
 
@@ -21,18 +21,6 @@ feature 'User following' do
     click_link "Follow"
 
     expect(page).to have_content "You've started following Bob Hope."
-    expect(page).to have_content "People I Follow"
-    expect(page).to have_link bob.name
-    unfollow(bob)
-
-    expect(page).to have_content "You've stopped following #{bob.name}."
-  end
-
-  scenario 'stop following bob' do
-    Fabricate(:relationship, leader: bob, follower: john)
-
-    visit people_path
-
     expect(page).to have_content "People I Follow"
     expect(page).to have_link bob.name
     unfollow(bob)

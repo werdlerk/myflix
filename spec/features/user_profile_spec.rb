@@ -13,14 +13,14 @@ feature 'User profile' do
 
   background { log_in_user }
 
-  scenario "visit John's user profile page" do
+  scenario "visit profile page with an empty video collection and no reviews" do
     visit user_path(john)
 
     expect(page).to have_content "#{john.name}'s video collection (0)"
     expect(page).to have_content "#{john.name}'s reviews (0)"
   end
 
-  scenario "visit Bob's user profile page" do
+  scenario "visit profile page with a video collection and reviews" do
     visit user_path(bob)
 
     expect(page).to have_content "#{bob.name}'s video collection (3)"
