@@ -17,6 +17,7 @@ describe UsersController do
   end
 
   describe 'POST #create' do
+    after { ActionMailer::Base.deliveries.clear }
 
     context "with valid input" do
       before do
@@ -31,6 +32,23 @@ describe UsersController do
       it 'should redirect to the login page with the flash message' do
         expect(response).to redirect_to login_path
       end
+
+      context 'send welcome email' do
+        it 'sends an email' do
+          expect(ActionMailer::Base.deliveries.count).to eq 1
+        end
+
+        it 'sends to the right recipient' do
+          message = ActionMailer::Base.deliveries.last
+          expect(message.to).to eq [ User.first.email ]
+        end
+
+        it "has the right content" do
+          email = ActionMailer::Base.deliveries.last
+          expect(email.body.encoded).to include User.first.name
+        end
+      end
+
     end
 
     context "with invalid input" do
@@ -49,6 +67,24 @@ describe UsersController do
       it 'sets the @user variable' do
         expect(assigns(:user)).to be_a_new(User)
       end
+
+      it 'does not send an email' do
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+    end
+  end
+
+  describe "GET #show" do
+    let(:user) { Fabricate(:user) }
+
+    it_behaves_like "requires sign in" do
+      let(:action) { get :show, id: user.id }
+    end
+
+    it "should set the @user variable" do
+      sign_in
+      get :show, id: user.id
+      expect(assigns(:user)).to eq(user)
     end
   end
 

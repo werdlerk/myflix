@@ -1,0 +1,17 @@
+!!! 5
+%html(lang="en-US")
+  %head
+    %title Welcome to MyFLiX!
+    %meta(charset="UTF-8")
+  %body
+    %h3 Welcome to MyFliX!
+    %p Hello #{@user.name},
+    %p
+      Your account has been succesfully created and ready to be used. You can login with the following credentials:
+      %br
+      E-mail: #{@user.email}
+      %br
+      Password: ***********
+    %p To login, click the following link: #{link_to login_url, login_url}
+
+    %p Good luck and have fun!

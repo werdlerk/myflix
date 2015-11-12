@@ -2,8 +2,12 @@ require "spec_helper"
 
 describe User do
   context 'relations' do
-    it { should have_many(:reviews) }
+    it { should have_many(:reviews).order(created_at: :desc) }
     it { should have_many(:queue_items).order(:position) }
+    it { should have_many(:following_relationships).class_name('Relationship').with_foreign_key(:follower_id) }
+    it { should have_many(:followers).through(:leading_relationships) }
+    it { should have_many(:leading_relationships).class_name('Relationship').with_foreign_key(:leader_id) }
+    it { should have_many(:leaders).through(:following_relationships) }
   end
 
   context 'validations' do

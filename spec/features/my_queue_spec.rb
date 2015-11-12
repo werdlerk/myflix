@@ -50,7 +50,7 @@ feature 'My Queue' do
 
   def add_video_to_queue(video)
     visit videos_path
-    find("a[href='#{video_path(video)}']").click
+    click_on_video_on_home_page(video)
     expect(page).to have_content video.title
     click_link "+ My Queue"
   end

@@ -8,6 +8,12 @@ Myflix::Application.routes.draw do
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
   get 'logout', to: 'sessions#destroy'
+  get 'forgot_password', to: 'passwords#new'
+  post 'forgot_password', to: 'passwords#create'
+  get 'reset_password', to: 'passwords#edit'
+  put 'reset_password', to: 'passwords#update'
+
+  resources :users, only: [:show]
 
   resources :videos, only: [:index, :show] do
     collection do
@@ -15,6 +21,7 @@ Myflix::Application.routes.draw do
     end
     resources :reviews, only: [:create]
   end
+
   resources :categories, only: [:show]
 
   resources :queue_items, only: [:index, :destroy, :create] do
@@ -23,7 +30,10 @@ Myflix::Application.routes.draw do
     end
   end
 
-  get 'my_queue', to:'queue_items#index'
+  resources :relationships, only: [:create, :destroy]
+
+  get 'my_queue', to: 'queue_items#index'
+  get 'people', to: 'relationships#index'
 
   # Mockups
   get 'ui(/:action)', controller: 'ui'

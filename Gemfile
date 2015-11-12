@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.1'
+ruby '2.1.7'
 
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
@@ -11,6 +11,8 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'pg'
 
+gem 'figaro'
+
 # has_secure_password
 gem 'bcrypt'
 
@@ -18,6 +20,7 @@ group :development do
   gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
+  gem "letter_opener"
 end
 
 group :development, :test do

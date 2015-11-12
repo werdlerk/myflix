@@ -19,5 +19,3 @@ module Myflix
     console { ActiveRecord::Base.connection }
   end
 end
-
-

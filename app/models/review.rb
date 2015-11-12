@@ -4,4 +4,6 @@ class Review < ActiveRecord::Base
 
   validates_presence_of :video, :author, :rating, :text
   validates :rating, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to:5 }
+
+  delegate :title, to: :video, prefix: :video
 end

@@ -1,0 +1,38 @@
+%section.user.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %article
+        %header
+          = image_tag @user.gravatar_image
+          %h2 #{@user.name}'s video collection (#{@user.queue_items.size})
+
+          - if @user != current_user
+            - if current_user.leaders.include? @user
+              = link_to "Stop following", current_user.following_relationships.find_by(leader: @user), method: :delete, 'data-confirm' => "Are you sure you want to stop following #{@user.name}?", class: 'btn btn-default'
+            - else
+              = link_to "Follow", relationships_path(leader_id: @user.id), method: :post, class: 'btn btn-default'
+        %table.table
+          %thead
+            %tr
+              %th(width="30%") Video Title
+              %th(width="15%") Genre
+          %tbody
+            - @user.queue_items.each do |queue_item|
+              %tr
+                %td= link_to queue_item.video_title, queue_item.video
+                %td= link_to queue_item.category_name, queue_item.category
+
+%section.user_reviews.container
+  .row
+    .col-sm-10.col-sm-offset-1
+      %header
+        %h3 #{@user.name}'s reviews (#{@user.reviews.size})
+      %ul
+        - @user.reviews.each do |review|
+          %article.review
+            %li.row
+              .col-sm-2
+                %p= link_to review.video_title, review.video
+                %col Rating: #{review.rating} / 5
+              .col-sm-8
+                %p #{review.text}

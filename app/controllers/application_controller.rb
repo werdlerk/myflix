@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def redirect_users_to_home
+  def disallow_authenticated_users
     redirect_to home_path if user_logged_in?
   end
 end

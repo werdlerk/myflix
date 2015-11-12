@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :redirect_users_to_home
+  before_action :disallow_authenticated_users, only: [:new, :create]
+  before_action :require_user, only: [:show]
 
   def new
     @user = User.new
@@ -10,10 +11,16 @@ class UsersController < ApplicationController
 
     if @user.save
       flash[:success] = "Welcome, #{@user.name}! Your account has been created, please login below."
+      UserMailer.welcome(@user).deliver
+
       redirect_to login_path
     else
       render 'new'
     end
+  end
+
+  def show
+    @user = User.find(params[:id])
   end
 
   private
