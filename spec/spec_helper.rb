@@ -5,6 +5,7 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'capybara/email/rspec'
 require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
