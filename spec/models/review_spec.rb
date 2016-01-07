@@ -25,7 +25,7 @@ describe Review do
     review2 = Fabricate(:review, text: 'review2', video: video)
     review3 = Fabricate(:review, text: 'review3', video: video)
 
-    video.reload.reviews.map(&:text).should eq(['review3', 'review2', 'review1'])
+    expect(video.reload.reviews.map(&:text)).to eq(['review3', 'review2', 'review1'])
   end
 
 end
