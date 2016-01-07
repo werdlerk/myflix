@@ -26,7 +26,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
-  gem 'rspec-rails', '2.99'
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :test do
@@ -34,7 +34,6 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers', require: false
   gem 'database_cleaner', '1.2.0'
-  gem 'guard-rspec'
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'capybara-email'
