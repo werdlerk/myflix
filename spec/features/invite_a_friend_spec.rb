@@ -4,10 +4,6 @@ feature 'Invite a friend' do
   given(:user) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
   given(:friend) { { name: "Bob Hope", email: "Bob@example.org", message: "This is awesome!", password: "My_Awesome_Password_9876" } }
 
-  background do
-    clear_emails
-  end
-
   scenario 'invite a friend to signup for MyFlix' do
     log_in_user(user)
 

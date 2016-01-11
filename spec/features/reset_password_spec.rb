@@ -3,10 +3,6 @@ require "spec_helper"
 feature 'Reset password' do
   given(:user) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
 
-  background  do
-    clear_emails
-  end
-
   scenario 'unable to reset password with a bad email address' do
     visit login_path
     click_link "Forgot password?"
