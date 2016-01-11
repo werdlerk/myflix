@@ -43,4 +43,42 @@ describe User do
     end
   end
 
+  describe '#follows?' do
+
+    it 'returns true if the user has a following relationship with another user' do
+      john = Fabricate(:user)
+      anne = Fabricate(:user)
+      Fabricate(:relationship, leader: john, follower: anne)
+
+      expect(anne.follows?(john)).to eq true
+    end
+
+    it 'returns false if the user does not have a following relationship with another user' do
+      john = Fabricate(:user)
+      anne = Fabricate(:user)
+      Fabricate(:relationship, leader: john, follower: anne)
+
+      expect(john.follows?(anne)).to eq false
+    end
+  end
+
+  describe '#follow!' do
+    it 'follows another user' do
+      john = Fabricate(:user)
+      anne = Fabricate(:user)
+
+      anne.follow!(john)
+
+      expect(anne.follows?(john)).to eq true
+    end
+
+    it 'does not follow oneself' do
+      john = Fabricate(:user)
+
+      john.follow!(john)
+
+      expect(john.follows?(john)).to eq false
+    end
+  end
+
 end
