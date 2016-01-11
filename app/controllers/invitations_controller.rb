@@ -13,7 +13,7 @@ class InvitationsController < ApplicationController
       InvitationMailer.invite(@invitation).deliver
 
       flash[:success] = "Invitation send to #{@invitation.name}!"
-      redirect_to root_path
+      redirect_to new_invitation_path
     else
       render 'new'
     end

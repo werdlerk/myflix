@@ -55,7 +55,11 @@ describe InvitationsController do
           expect(flash[:success]).to be_present
         end
 
-        context 'inviation email' do
+        it 'redirects to the invitation new page' do
+          expect(response).to redirect_to new_invitation_path
+        end
+
+        context 'invitation email' do
           it 'sends the email' do
             expect(ActionMailer::Base.deliveries.count).to eq 1
           end
