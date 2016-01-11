@@ -19,8 +19,6 @@ describe PasswordsController do
   end
 
   describe 'POST #create' do
-    after { ActionMailer::Base.deliveries.clear }
-
     let(:user) { Fabricate(:user) }
 
     context 'with valid input' do
@@ -39,7 +37,7 @@ describe PasswordsController do
 
     context 'with empty input' do
       before { post :create, email: '' }
-      
+
       it 'does not send a reset password email if no email is given' do
         expect(ActionMailer::Base.deliveries).to be_empty
       end
@@ -51,7 +49,7 @@ describe PasswordsController do
       it 'shows the flash error message' do
         expect(flash[:warning]).to be_present
       end
-      
+
     end
 
     context 'with invalid input' do
@@ -98,7 +96,7 @@ describe PasswordsController do
 
         expect(response).to render_template 'edit'
       end
-      
+
     end
 
     context 'invalid token' do
@@ -119,7 +117,7 @@ describe PasswordsController do
   end
 
   describe 'PUT #update' do
-    
+
     it 'redirects logged in users to the home page' do
       sign_in
 
@@ -144,7 +142,7 @@ describe PasswordsController do
       end
 
       it 'redirects to the login page' do
-        expect(response).to redirect_to login_path      
+        expect(response).to redirect_to login_path
       end
 
       it 'shows a flash confirmation message' do
