@@ -8,7 +8,6 @@ class InvitationsController < ApplicationController
   def create
     @invitation = Invitation.new(invitation_params)
     @invitation.author = current_user
-    @invitation.token = SecureRandom.hex
 
     if @invitation.save
       InvitationMailer.invite(@invitation).deliver
