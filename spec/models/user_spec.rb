@@ -8,6 +8,7 @@ describe User do
     it { should have_many(:followers).through(:leading_relationships) }
     it { should have_many(:leading_relationships).class_name('Relationship').with_foreign_key(:leader_id) }
     it { should have_many(:leaders).through(:following_relationships) }
+    it { should have_many(:invitations) }
   end
 
   context 'validations' do

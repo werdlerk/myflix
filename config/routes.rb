@@ -32,6 +32,8 @@ Myflix::Application.routes.draw do
 
   resources :relationships, only: [:create, :destroy]
 
+  resources :invitations, only: [:new, :create]
+
   get 'my_queue', to: 'queue_items#index'
   get 'people', to: 'relationships#index'
 

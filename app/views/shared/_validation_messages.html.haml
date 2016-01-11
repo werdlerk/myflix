@@ -1,0 +1,9 @@
+- if object.errors.any?
+  .alert.alert-danger.alert-dismissable
+    %button{:type => "button", :class => "close", "data-dismiss" => "alert", "aria-hidden" => "true"} &times;
+
+    %strong The #{object.class.model_name.human.downcase} could not be saved due to the following errors:
+
+    %ul
+      - object.errors.full_messages.each do |message|
+        %li= message

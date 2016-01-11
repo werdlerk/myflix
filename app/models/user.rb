@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :leading_relationships, class_name: Relationship, foreign_key: :leader_id
   has_many :leaders, through: :following_relationships
 
+  has_many :invitations
 
   has_secure_password(validations: false)
 
