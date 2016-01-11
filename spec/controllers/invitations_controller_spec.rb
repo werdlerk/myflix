@@ -71,7 +71,7 @@ describe InvitationsController do
 
           it "contains the registration link with the invitation token" do
             email = ActionMailer::Base.deliveries.last
-            expect(email.body.encoded).to include register_url(token: Invitation.last.token)
+            expect(email.body.encoded).to include register_with_invitation_url(Invitation.last.token)
           end
         end
 

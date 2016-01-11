@@ -10,6 +10,6 @@
     %p #{@invitation.message}
     %br
     %p Click on the following link to signup:
-    %p #{link_to 'Sign up', register_url(token: @invitation.token)}
+    %p #{link_to 'Sign up', register_with_invitation_url(@invitation.token)}
 
     %p Good luck and have fun!

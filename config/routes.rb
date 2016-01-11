@@ -4,6 +4,7 @@ Myflix::Application.routes.draw do
   get 'home', to: 'videos#index'
 
   get 'register', to: 'users#new'
+  get 'register/:token', to: 'users#new_with_invitation', as: 'register_with_invitation'
   post 'register', to: 'users#create'
   get 'login', to: 'sessions#new'
   post 'login', to: 'sessions#create'
