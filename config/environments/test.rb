@@ -17,3 +17,6 @@ Myflix::Application.configure do
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.active_support.deprecation = :stderr
 end
+
+# Default url options for view helpers in the tests
+Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
