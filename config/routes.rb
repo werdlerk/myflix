@@ -12,6 +12,7 @@ Myflix::Application.routes.draw do
   post 'forgot_password', to: 'passwords#create'
   get 'reset_password', to: 'passwords#edit'
   put 'reset_password', to: 'passwords#update'
+  get 'invalid_token', to: 'pages#invalid_token'
 
   resources :users, only: [:show]
 

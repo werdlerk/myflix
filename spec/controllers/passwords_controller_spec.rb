@@ -102,16 +102,16 @@ describe PasswordsController do
     context 'invalid token' do
       let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: DateTime.now) }
 
-      it 'renders the invalid_token template for an expired token' do
+      it 'redirects to invalid_token_path for an expired token' do
         get :edit, token: user.reset_token
 
-        expect(response).to render_template 'invalid_token'
+        expect(response).to redirect_to invalid_token_path
       end
 
-      it 'renders the invalid_token template for a bad token' do
+      it 'redirects to invalid_token_path for a bad token' do
         get :edit, token: 'bla'
 
-        expect(response).to render_template 'invalid_token'
+        expect(response).to redirect_to invalid_token_path
       end
     end
   end
@@ -161,8 +161,8 @@ describe PasswordsController do
         expect(user.password_digest.to_s).to eq user.reload.password_digest
       end
 
-      it 'shows the invalid_token template' do
-        expect(response).to render_template 'invalid_token'
+      it 'redirects to the invalid_token_path' do
+        expect(response).to redirect_to invalid_token_path
       end
     end
 
@@ -177,8 +177,8 @@ describe PasswordsController do
         expect(user.password_digest.to_s).to eq user.reload.password_digest
       end
 
-      it 'shows the invalid_token template' do
-        expect(response).to render_template 'invalid_token'
+      it 'redirects to the invalid_token_path' do
+        expect(response).to redirect_to invalid_token_path
       end
     end
   end

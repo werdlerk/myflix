@@ -35,7 +35,7 @@ class PasswordsController < ApplicationController
     user = User.find_by(reset_token: params[:token])
 
     unless user.present? && params[:token].present? && user.reset_token_expiration >= DateTime.now
-      render 'invalid_token'
+      redirect_to invalid_token_path
     end
   end
 
