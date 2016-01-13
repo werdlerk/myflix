@@ -89,10 +89,10 @@ describe PasswordsController do
     end
 
     context 'valid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       it 'renders the edit template' do
-        get :edit, token: user.reset_token
+        get :edit, token: user.token
 
         expect(response).to render_template 'edit'
       end
@@ -100,10 +100,10 @@ describe PasswordsController do
     end
 
     context 'invalid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: DateTime.now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: DateTime.now) }
 
       it 'redirects to invalid_token_path for an expired token' do
-        get :edit, token: user.reset_token
+        get :edit, token: user.token
 
         expect(response).to redirect_to invalid_token_path
       end
@@ -127,10 +127,10 @@ describe PasswordsController do
     end
 
     context 'valid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       before do
-        put :update, token: user.reset_token, password: Faker::Internet.password
+        put :update, token: user.token, password: Faker::Internet.password
       end
 
       it 'changes the password' do
@@ -138,7 +138,7 @@ describe PasswordsController do
       end
 
       it 'invalidates the token' do
-        expect(user.reload.reset_token).to be_nil
+        expect(user.reload.token).to be_nil
       end
 
       it 'redirects to the login page' do
@@ -151,7 +151,7 @@ describe PasswordsController do
     end
 
     context 'invalid token' do
-      let!(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let!(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       before do
         put :update, token: 'slkdfj', password: Faker::Internet.password
@@ -167,10 +167,10 @@ describe PasswordsController do
     end
 
     context 'expired token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: DateTime.now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: DateTime.now) }
 
       before do
-        put :update, token: user.reset_token, password: Faker::Internet.password
+        put :update, token: user.token, password: Faker::Internet.password
       end
 
       it 'does not change the password' do

@@ -6,8 +6,8 @@ class PasswordsController < ApplicationController
     user = User.find_by(email: params[:email])
 
     if user.present?
-      user.reset_token = SecureRandom.urlsafe_base64
-      user.reset_token_expiration = 2.hours.from_now
+      user.token = SecureRandom.urlsafe_base64
+      user.token_expiration = 2.hours.from_now
       user.save!
 
       UserMailer.reset_password(user).deliver
@@ -18,10 +18,10 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    user = User.find_by(reset_token: params[:token])
+    user = User.find_by(token: params[:token])
     user.password = params[:password]
-    user.reset_token = nil
-    user.reset_token_expiration = nil
+    user.token = nil
+    user.token_expiration = nil
     user.save!
 
     flash[:success] = "Your password has been changed. You can now login with the new password."
@@ -32,9 +32,9 @@ class PasswordsController < ApplicationController
   private
 
   def require_valid_token
-    user = User.find_by(reset_token: params[:token])
+    user = User.find_by(token: params[:token])
 
-    unless user.present? && params[:token].present? && user.reset_token_expiration >= DateTime.now
+    unless user.present? && params[:token].present? && user.token_expiration >= DateTime.now
       redirect_to invalid_token_path
     end
   end
