@@ -6,6 +6,6 @@ module Tokenable
   end
 
   def generate_token
-    self.token = SecureRandom.hex
+    self.token = SecureRandom.urlsafe_base64
   end
 end
