@@ -7,7 +7,20 @@ feature 'Invite a friend' do
   scenario 'invite a friend to signup for MyFlix' do
     log_in_user(user)
 
-    # Send invitation e-mail to friend
+    user_sends_invitation
+
+    friend_opens_email
+    friend_signs_up
+    friend_logs_in
+    expect_to_follow(friend[:name])
+
+    log_out
+
+    log_in_user(user)
+    expect_to_follow(user.name)
+  end
+
+  def user_sends_invitation
     click_link 'Invite a friend'
     expect(page).to have_content 'Invite a friend to join MyFlix!'
 
@@ -16,43 +29,37 @@ feature 'Invite a friend' do
     fill_in 'Invitation Message', with: friend[:message]
     click_button 'Send Invitation'
 
-    click_link 'Sign Out'
+    log_out
+  end
 
-    # Friend opens the e-mail
+  def friend_opens_email
     open_email friend[:email]
     expect(current_email).to have_content "Invitation to MyFliX!"
     expect(current_email).to have_content friend[:message]
     current_email.click_link 'Sign up'
+  end
 
-    # Friend signs up using link in e-mail
+  def friend_signs_up
     expect(page).to have_content "Register"
     expect(page).to have_field 'Email Address', with: friend[:email]
     expect(page).to have_field 'Full Name', with: friend[:name]
     fill_in 'Password', with: friend[:password]
     click_button 'Sign Up'
 
-    # Successfully signed up
     expect(page).to have_content "Welcome, #{friend[:name]}! Your account has been created, please login below."
+  end
 
-    # Friend logs in
+  def friend_logs_in
     fill_in 'Email Address', with: friend[:email]
     fill_in 'Password', with: friend[:password]
     click_button 'Sign in'
     expect(page).to have_content "Welcome back, #{friend[:name]}"
+  end
 
-    # Friend follows user
+  def expect_to_follow(user_name)
     click_link "People"
     expect(page).to have_content "People I Follow"
-    expect(page).to have_link user.name
-
-    click_link "Sign Out"
-
-    # User follows friend
-    log_in_user(user)
-
-    click_link "People"
-    expect(page).to have_content "People I Follow"
-    expect(page).to have_link friend[:name]
+    expect(page).to have_link user_name
   end
 
 end
