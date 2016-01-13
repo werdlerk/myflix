@@ -22,7 +22,11 @@ describe User do
     it { should have_secure_password }
   end
 
-  describe :queued_video? do
+  it_behaves_like "tokenable" do
+    let(:object) { Fabricate(:user) }
+  end
+
+  describe '#queued_video?' do
     let(:user) { Fabricate(:user) }
     let(:video) { Fabricate(:video) }
     let(:video2) { Fabricate(:video) }

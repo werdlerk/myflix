@@ -10,3 +10,11 @@ shared_examples "requires sign in" do
     expect(flash[:warning]).to be_present
   end
 end
+
+shared_examples "tokenable" do
+
+  it 'generates a token upon creation' do
+    expect(object.token).to be_present
+  end
+
+end
