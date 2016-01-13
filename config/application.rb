@@ -17,5 +17,7 @@ module Myflix
     end
 
     console { ActiveRecord::Base.connection }
+
+    config.autoload_paths << "#{Rails.root}/lib"
   end
 end
