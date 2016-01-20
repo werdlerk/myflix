@@ -2,7 +2,8 @@
   .row
     .col-sm-10.col-sm-offset-1
       = bootstrap_form_for @user, layout: :horizontal, url: register_path do |f|
-        = hidden_field_tag :invitation_token, @invitation.token
+        - if @invitation
+          = hidden_field_tag :invitation_token, @invitation.token
 
         %header
           %h1 Register
