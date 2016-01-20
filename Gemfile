@@ -21,8 +21,10 @@ gem 'sidekiq'
 # Sinatra gem for Sidekiq Web UI
 gem 'sinatra', :require => nil
 
+# Puma web server
+gem 'puma'
+
 group :development do
-  gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
   gem "letter_opener"
