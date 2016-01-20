@@ -16,6 +16,11 @@ gem 'figaro'
 # has_secure_password
 gem 'bcrypt'
 
+# Background jobs
+gem 'sidekiq'
+# Sinatra gem for Sidekiq Web UI
+gem 'sinatra', :require => nil
+
 group :development do
   gem 'thin'
   gem "better_errors"
