@@ -10,7 +10,7 @@ class PasswordsController < ApplicationController
       user.token_expiration = 2.hours.from_now
       user.save!
 
-      UserMailer.reset_password(user).deliver
+      UserMailer.delay.reset_password(user.id)
     else
       flash.now[:warning] = "The given e-mail address can't be found. If you want to use this e-mail address, please sign up."
       render 'new'

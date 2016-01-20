@@ -5,7 +5,7 @@ describe InvitationMailer do
   describe '#invite' do
     let(:user) { Fabricate(:user) }
     let(:invitation) { Fabricate(:invitation, author: user) }
-    let(:mail) { InvitationMailer.invite(invitation) }
+    let(:mail) { InvitationMailer.invite(invitation.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to eq "Invitation to MyFliX"

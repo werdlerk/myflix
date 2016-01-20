@@ -4,7 +4,7 @@ describe UserMailer do
 
   describe '#welcome' do
     let(:user) { Fabricate(:user) }
-    let(:mail) { UserMailer.welcome(user) }
+    let(:mail) { UserMailer.welcome(user.id) }
 
     it 'renders the subject' do
       expect(mail.subject).to eq "Welcome to MyFliX"
@@ -29,7 +29,7 @@ describe UserMailer do
 
   describe '#reset_password' do
       let(:user) { Fabricate(:user) }
-      let(:mail) { UserMailer.reset_password(user) }
+      let(:mail) { UserMailer.reset_password(user.id) }
 
       it 'renders the subject' do
         expect(mail.subject).to eq "Reset password"
@@ -42,7 +42,7 @@ describe UserMailer do
       it 'renders the sender email' do
         expect(mail.from).to eq [ "info@myflix.com" ]
       end
-      
+
       it 'sends the reset password url in the email' do
         expect(mail.body.encoded).to match(reset_password_url)
       end

@@ -6,6 +6,7 @@ require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/rspec'
 require 'capybara/email/rspec'
+require 'sidekiq/testing'
 require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -68,3 +69,7 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
 end
+
+# Sidekiq: Testing Workers Inline
+Sidekiq::Testing.inline!
+

@@ -10,7 +10,7 @@ class InvitationsController < ApplicationController
     @invitation.author = current_user
 
     if @invitation.save
-      InvitationMailer.invite(@invitation).deliver
+      InvitationMailer.delay.invite(@invitation.id)
 
       flash[:success] = "Invitation send to #{@invitation.name}!"
       redirect_to new_invitation_path
