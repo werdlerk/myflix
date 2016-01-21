@@ -24,6 +24,9 @@ gem 'sinatra', :require => nil
 # Puma web server
 gem 'puma'
 
+# Error reporting
+gem 'sentry-raven'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
