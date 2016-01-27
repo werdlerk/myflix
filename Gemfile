@@ -48,6 +48,9 @@ group :test do
   gem 'capybara'
   gem 'capybara-email'
   gem 'launchy'
+
+  # Add test metadata collection for CircleCI
+  gem 'rspec_junit_formatter', '0.2.2'
 end
 
 group :production do
