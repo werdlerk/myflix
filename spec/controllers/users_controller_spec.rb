@@ -7,25 +7,25 @@ describe UsersController do
       get :new
     end
 
-    it 'should render the new template' do
+    it 'renders the new template' do
       expect(response).to render_template :new
     end
 
-    it 'should sets the @user variable' do
+    it 'sets the @user variable' do
       expect(assigns(:user)).to be_a_new(User)
     end
   end
 
   describe 'POST #create' do
     context "with valid input" do
-      it 'should create the user' do
+      it 'creates the user' do
         post :create, user: Fabricate.attributes_for(:user)
 
         expect(assigns(:user)).to be_persisted
         expect(User.count).to eq(1)
       end
 
-      it 'should redirect to the login page with the flash message' do
+      it 'redirects to the login page with the flash message' do
         post :create, user: Fabricate.attributes_for(:user)
 
         expect(response).to redirect_to login_path
@@ -84,7 +84,7 @@ describe UsersController do
         expect(User.count).to eq(0)
       end
 
-      it 'should render the new page for form errors' do
+      it 'renders the new page for form errors' do
         expect(response).to render_template 'new'
       end
 
