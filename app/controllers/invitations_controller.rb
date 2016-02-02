@@ -6,8 +6,7 @@ class InvitationsController < ApplicationController
   end
 
   def create
-    @invitation = Invitation.new(invitation_params)
-    @invitation.author = current_user
+    @invitation = Invitation.new(invitation_params.merge( author: current_user ))
 
     if @invitation.save
       InvitationMailer.delay.invite(@invitation.id)
