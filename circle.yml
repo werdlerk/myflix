@@ -9,11 +9,11 @@ deployment:
     branch: master
     commands:
       - heroku maintenance:on --app cf-myflix
-      - heroku pg:backups capture --app cf-mylix
+      - heroku pg:backups capture --app cf-myflix
       - "[[ ! -s \"$(git rev-parse --git-dir)/shallow\" ]] || git fetch --unshallow"
-      - git push git@heroku.com:cf-mylix.git $CIRCLE_SHA1:refs/heads/master
-      - heroku run rake db:migrate --app cf-mylix
-      - heroku maintenance:off --app cf-mylix
+      - git push git@heroku.com:cf-myflix.git $CIRCLE_SHA1:refs/heads/master
+      - heroku run rake db:migrate --app cf-myflix
+      - heroku maintenance:off --app cf-myflix
   staging:
     branch: staging
     commands:
