@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
       @user.follow!(invitation.author)
       invitation.author.follow!(@user)
-      invitation.update_column(:token, nil)
+      invitation.clear_token!
     end
   end
 end

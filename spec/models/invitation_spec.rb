@@ -15,4 +15,12 @@ describe Invitation do
     let(:object) { Fabricate(:invitation) }
   end
 
+  describe '#clear_token!' do
+    it 'clears the token' do
+      invitation = Fabricate(:invitation, token: "DEF")
+      invitation.clear_token!
+      expect(invitation.reload.token).to be_nil
+    end
+  end
+
 end
