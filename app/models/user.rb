@@ -38,4 +38,8 @@ class User < ActiveRecord::Base
     !(self.follows?(another_user) || self == another_user)
   end
 
+  def token_expired?
+    token.nil? || token_expiration.nil? || DateTime.now >= token_expiration
+  end
+
 end

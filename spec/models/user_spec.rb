@@ -85,4 +85,32 @@ describe User do
     end
   end
 
+  describe '#token_expired?' do
+    context 'no token or expiration set' do
+      it 'returns true when there is no token set' do
+        user = Fabricate(:user, token: nil, token_expiration: nil)
+        expect(user.token_expired?).to eq true
+      end
+
+      it 'returns true when there is no token_expiration set' do
+        user = Fabricate(:user, token: "ABC", token_expiration: nil)
+        expect(user.token_expired?).to eq true
+      end
+    end
+
+    context 'token and expiration set' do
+      it 'returns true when the token_expiration has passed' do
+        user = Fabricate(:user, token: "ABC", token_expiration: DateTime.now)
+        expect(user.token_expired?).to eq true
+      end
+
+      it 'returns false when the token_expiration has not passed' do
+        user = Fabricate(:user, token: "ABC", token_expiration: 1.minute.from_now)
+        expect(user.token_expired?).to eq false
+      end
+
+    end
+
+  end
+
 end
