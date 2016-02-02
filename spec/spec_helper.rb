@@ -5,6 +5,8 @@ require 'rspec/rails'
 require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/rspec'
+require 'capybara/email/rspec'
+require 'sidekiq/testing'
 require 'pry'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -21,6 +23,10 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.include Rails.application.routes.url_helpers
+
+  config.before(:each) { ActionMailer::Base.deliveries.clear }
+
   # ## Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -63,3 +69,7 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/v/3-0/docs
   config.infer_spec_type_from_file_location!
 end
+
+# Sidekiq: Testing Workers Inline
+Sidekiq::Testing.inline!
+

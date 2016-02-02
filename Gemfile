@@ -16,8 +16,18 @@ gem 'figaro'
 # has_secure_password
 gem 'bcrypt'
 
+# Background jobs
+gem 'sidekiq'
+# Sinatra gem for Sidekiq Web UI
+gem 'sinatra', :require => nil
+
+# Puma web server
+gem 'puma'
+
+# Error reporting
+gem 'sentry-raven'
+
 group :development do
-  gem 'thin'
   gem "better_errors"
   gem "binding_of_caller"
   gem "letter_opener"
@@ -26,7 +36,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'pry-nav'
-  gem 'rspec-rails', '2.99'
+  gem 'rspec-rails', '~> 3.0'
 end
 
 group :test do
@@ -34,13 +44,15 @@ group :test do
   gem 'faker'
   gem 'shoulda-matchers', require: false
   gem 'database_cleaner', '1.2.0'
-  gem 'guard-rspec'
   gem 'terminal-notifier-guard'
   gem 'capybara'
+  gem 'capybara-email'
   gem 'launchy'
+
+  # Add test metadata collection for CircleCI
+  gem 'rspec_junit_formatter', '0.2.2'
 end
 
 group :production do
   gem 'rails_12factor'
 end
-

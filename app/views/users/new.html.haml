@@ -1,14 +1,17 @@
 %section.register.container
   .row
     .col-sm-10.col-sm-offset-1
-      = bootstrap_form_for @user, layout: :horizontal, url: register_path do |f|
+      = bootstrap_form_for @user, layout: :horizontal, url: register_path, control_col: 'col-sm-6' do |f|
+        - if @invitation
+          = hidden_field_tag :invitation_token, @invitation.token
+
         %header
           %h1 Register
         %fieldset
-          = f.email_field :email, control_col: 'col-sm-6', label: 'Email Address'
-          = f.password_field :password, control_col: 'col-sm-6'
-          = f.text_field :name, control_col: 'col-sm-6', label: 'Full Name'
-          
+          = f.email_field :email, label: 'Email Address'
+          = f.password_field :password
+          = f.text_field :name, label: 'Full Name'
+
         %fieldset.actions.control-group.col-sm-offset-2
           .controls
             = f.submit 'Sign Up'

@@ -19,8 +19,6 @@ describe PasswordsController do
   end
 
   describe 'POST #create' do
-    after { ActionMailer::Base.deliveries.clear }
-
     let(:user) { Fabricate(:user) }
 
     context 'with valid input' do
@@ -39,7 +37,7 @@ describe PasswordsController do
 
     context 'with empty input' do
       before { post :create, email: '' }
-      
+
       it 'does not send a reset password email if no email is given' do
         expect(ActionMailer::Base.deliveries).to be_empty
       end
@@ -51,7 +49,7 @@ describe PasswordsController do
       it 'shows the flash error message' do
         expect(flash[:warning]).to be_present
       end
-      
+
     end
 
     context 'with invalid input' do
@@ -91,35 +89,35 @@ describe PasswordsController do
     end
 
     context 'valid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       it 'renders the edit template' do
-        get :edit, token: user.reset_token
+        get :edit, token: user.token
 
         expect(response).to render_template 'edit'
       end
-      
+
     end
 
     context 'invalid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: DateTime.now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: DateTime.now) }
 
-      it 'renders the invalid_token template for an expired token' do
-        get :edit, token: user.reset_token
+      it 'redirects to invalid_token_path for an expired token' do
+        get :edit, token: user.token
 
-        expect(response).to render_template 'invalid_token'
+        expect(response).to redirect_to invalid_token_path
       end
 
-      it 'renders the invalid_token template for a bad token' do
+      it 'redirects to invalid_token_path for a bad token' do
         get :edit, token: 'bla'
 
-        expect(response).to render_template 'invalid_token'
+        expect(response).to redirect_to invalid_token_path
       end
     end
   end
 
   describe 'PUT #update' do
-    
+
     it 'redirects logged in users to the home page' do
       sign_in
 
@@ -129,10 +127,10 @@ describe PasswordsController do
     end
 
     context 'valid token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       before do
-        put :update, token: user.reset_token, password: Faker::Internet.password
+        put :update, token: user.token, password: Faker::Internet.password
       end
 
       it 'changes the password' do
@@ -140,11 +138,11 @@ describe PasswordsController do
       end
 
       it 'invalidates the token' do
-        expect(user.reload.reset_token).to be_nil
+        expect(user.reload.token).to be_nil
       end
 
       it 'redirects to the login page' do
-        expect(response).to redirect_to login_path      
+        expect(response).to redirect_to login_path
       end
 
       it 'shows a flash confirmation message' do
@@ -153,7 +151,7 @@ describe PasswordsController do
     end
 
     context 'invalid token' do
-      let!(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: 1.hour.from_now) }
+      let!(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: 1.hour.from_now) }
 
       before do
         put :update, token: 'slkdfj', password: Faker::Internet.password
@@ -163,24 +161,24 @@ describe PasswordsController do
         expect(user.password_digest.to_s).to eq user.reload.password_digest
       end
 
-      it 'shows the invalid_token template' do
-        expect(response).to render_template 'invalid_token'
+      it 'redirects to the invalid_token_path' do
+        expect(response).to redirect_to invalid_token_path
       end
     end
 
     context 'expired token' do
-      let(:user) { Fabricate(:user, reset_token: SecureRandom.urlsafe_base64, reset_token_expiration: DateTime.now) }
+      let(:user) { Fabricate(:user, token: SecureRandom.urlsafe_base64, token_expiration: DateTime.now) }
 
       before do
-        put :update, token: user.reset_token, password: Faker::Internet.password
+        put :update, token: user.token, password: Faker::Internet.password
       end
 
       it 'does not change the password' do
         expect(user.password_digest.to_s).to eq user.reload.password_digest
       end
 
-      it 'shows the invalid_token template' do
-        expect(response).to render_template 'invalid_token'
+      it 'redirects to the invalid_token_path' do
+        expect(response).to redirect_to invalid_token_path
       end
     end
   end

@@ -1,0 +1,15 @@
+!!! 5
+%html(lang="en-US")
+  %head
+    %title Invitation to MyFLiX!
+    %meta(charset="UTF-8")
+  %body
+    %h3 Invitation to MyFliX!
+    %p Hello #{@invitation.name},
+    %p #{@invitation.author.name} would like to invite you to MyFlix. He has send you the message:
+    %p #{@invitation.message}
+    %br
+    %p Click on the following link to signup:
+    %p #{link_to 'Sign up', register_with_invitation_url(@invitation.token)}
+
+    %p Good luck and have fun!
