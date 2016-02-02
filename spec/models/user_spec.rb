@@ -85,6 +85,20 @@ describe User do
     end
   end
 
+  describe 'clear_token!' do
+    let(:user) { Fabricate(:user, token: "~ZZZ", token_expiration: DateTime.now) }
+
+    before { user.clear_token! }
+
+    it 'clears the token' do
+      expect(user.token).to be_nil
+    end
+
+    it 'clears the token expiration' do
+      expect(user.token_expiration).to be_nil
+    end
+  end
+
   describe '#token_expired?' do
     context 'no token or expiration set' do
       it 'returns true when there is no token set' do

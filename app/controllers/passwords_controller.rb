@@ -18,14 +18,20 @@ class PasswordsController < ApplicationController
   end
 
   def update
-    user = User.find_by(token: params[:token])
-    user.password = params[:password]
-    user.token = nil
-    user.token_expiration = nil
-    user.save!
+    @user = User.find_by(token: params[:token])
 
-    flash[:success] = "Your password has been changed. You can now login with the new password."
-    redirect_to login_path
+    if @user.present? && @user.update(password: params[:password])
+      @user.clear_token!
+
+      flash[:success] = "Your password has been changed. You can now login with the new password."
+      redirect_to login_path
+
+    elsif user.present?
+      render 'edit'
+
+    else
+      redirect_to invalid_token_path
+    end
   end
 
 
