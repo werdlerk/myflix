@@ -1,8 +1,6 @@
 require "spec_helper"
 
 describe Admin::VideosController do
-  let(:admin) { Fabricate(:admin) }
-
   describe 'GET #new' do
     it_behaves_like "requires admin" do
       let(:action) { get :new }
@@ -10,7 +8,7 @@ describe Admin::VideosController do
 
     context 'admin users' do
       before do
-        sign_in admin
+        set_current_admin
 
         get :new
       end

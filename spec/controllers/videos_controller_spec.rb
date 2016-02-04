@@ -5,7 +5,7 @@ describe VideosController do
 
   describe 'GET #index' do
     it 'sets the @categories variable for authenticated users' do
-      sign_in
+      set_current_user
 
       local_video = video
 
@@ -23,7 +23,7 @@ describe VideosController do
       let!(:review) { Fabricate(:review, video: video) }
 
       before do
-        sign_in
+        set_current_user
         get :show, id: video.id
       end
 
@@ -46,7 +46,7 @@ describe VideosController do
 
   describe 'POST #search' do
     context 'authenticated users' do
-      before { sign_in }
+      before { set_current_user }
 
       it 'sets the @videos variable' do
         mary_poppins = Fabricate(:video, title: 'Mary Poppins')

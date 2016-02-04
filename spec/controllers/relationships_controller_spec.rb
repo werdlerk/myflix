@@ -10,7 +10,7 @@ describe RelationshipsController do
     end
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       it "should set empty @relationships variable when there are no relationships" do
         get :index
@@ -41,7 +41,7 @@ describe RelationshipsController do
     end
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       it 'creates the Relationship' do
         post :create, leader_id: john.id
@@ -99,7 +99,7 @@ describe RelationshipsController do
     end
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       it 'removes the Relationship' do
         delete :destroy, id: relationship.id

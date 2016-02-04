@@ -8,7 +8,7 @@ describe ReviewsController do
 
     context 'authenticated users' do
 
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       context 'with valid input' do
         before do

@@ -136,7 +136,7 @@ describe UsersController do
     end
 
     it "should set the @user variable" do
-      sign_in
+      set_current_user
       get :show, id: user.id
       expect(assigns(:user)).to eq(user)
     end

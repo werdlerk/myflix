@@ -8,7 +8,7 @@ describe QueueItemsController do
   describe 'GET #index' do
 
     context 'authenticated users' do
-      before { sign_in user }
+      before { set_current_user user }
 
       it 'sets the @queue_items variable to the queue items of the logged in user' do
         other_user = Fabricate(:user, name:'second')
@@ -35,7 +35,7 @@ describe QueueItemsController do
   describe 'POST #create' do
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       it 'creates the QueueItem' do
         post :create, video_id: video.id
@@ -90,7 +90,7 @@ describe QueueItemsController do
   describe 'DELETE #destroy' do
 
     context 'authenticated users' do
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       it 'destroys the queue_item' do
         delete :destroy, id: queue_item.id
@@ -137,7 +137,7 @@ describe QueueItemsController do
 
   describe 'POST #change' do
     context 'authenticated users' do
-      before { sign_in user }
+      before { set_current_user user }
 
       let(:video1) { Fabricate(:video) }
       let(:video2) { Fabricate(:video) }

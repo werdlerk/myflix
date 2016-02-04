@@ -19,7 +19,7 @@ shared_examples "requires admin" do
   end
 
   it 'redirects to the root_path for authenticated non-admin users' do
-    sign_in
+    set_current_user
     action
     expect(response).to redirect_to root_path
   end
