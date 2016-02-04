@@ -1,0 +1,17 @@
+%section.admin_add_video
+  .container
+    .row
+      .col-md-10.col-md-offset-1
+        %form.form-horizontal
+          %ul.nav.nav-tabs
+            %li.active
+              = link_to admin_path do
+                %span.glyphicon.glyphicon-home
+            %li
+              %a(href="") Recent Payments
+            %li
+              = link_to 'Add a New Video', new_admin_video_path
+          %br
+
+          Admin home
+
