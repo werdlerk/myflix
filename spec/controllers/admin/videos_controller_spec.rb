@@ -53,6 +53,36 @@ describe Admin::VideosController do
 
           expect(flash[:success]).to be_present
         end
+
+        it 'doesnt upload the large cover' do
+          post :create, video: video_attributes
+
+          expect(Video.first.large_cover).not_to be_present
+
+        end
+
+        it 'doesnt upload the small cover' do
+          post :create, video: video_attributes
+
+          expect(Video.first.small_cover).not_to be_present
+        end
+
+        context 'with covers' do
+          let(:video_attributes) { Fabricate.attributes_for(:video_with_covers) }
+
+          it 'uploads the large cover' do
+            post :create, video: video_attributes
+
+            expect(Video.first.large_cover).to be_present
+          end
+
+          it 'uploads the small cover' do
+            post :create, video: video_attributes
+
+            expect(Video.first.small_cover).to be_present
+          end
+
+        end
       end
 
       context 'invalid input' do

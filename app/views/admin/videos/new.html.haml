@@ -12,6 +12,7 @@
             %li.active
               = link_to 'Add a New Video', new_admin_video_path
           %br
+          = render 'shared/validation_messages', object: @video
           %fieldset
             .form-group
               = f.label :title, class: 'control-label col-sm-3'
@@ -30,11 +31,13 @@
               .col-sm-6
                 %col.btn.btn-file
                   = f.file_field :large_cover, class: 'form-control'
+                  = f.hidden_field :large_cover_cache
             .form-group
               = f.label :small_cover, class: 'control-label col-sm-3'
               .col-sm-6
                 %col.btn.btn-file
                   = f.file_field :small_cover, class: 'form-control'
+                  = f.hidden_field :small_cover_cache
 
           %fieldset.actions.form-group
             .col-sm-6.col-md-offset-3

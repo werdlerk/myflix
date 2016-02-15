@@ -3,6 +3,9 @@ class Video < ActiveRecord::Base
   has_many :reviews, -> { order('created_at DESC') }
   has_many :queue_items
 
+  mount_uploader :small_cover, CoverUploader
+  mount_uploader :large_cover, CoverUploader
+
   validates :title, :description, presence:true
 
   def self.search_by_title(search_term)

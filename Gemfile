@@ -27,6 +27,10 @@ gem 'puma'
 # Error reporting
 gem 'sentry-raven'
 
+# File uploads
+gem 'carrierwave'
+gem 'mini_magick'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

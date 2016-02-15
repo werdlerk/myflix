@@ -21,3 +21,10 @@ Myflix::Application.configure do
 
   config.eager_load = false
 end
+
+CarrierWave.configure do |config|
+  config.storage = :file
+  config.ignore_integrity_errors = false
+  config.ignore_processing_errors = false
+  config.ignore_download_errors = false
+end

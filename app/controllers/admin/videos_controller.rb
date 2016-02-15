@@ -7,6 +7,7 @@ class Admin::VideosController < AdminController
 
   def create
     @video = Video.new(video_params)
+    @categories = Category.all
 
     if @video.save
       flash[:success] = "Video created"
@@ -20,7 +21,7 @@ class Admin::VideosController < AdminController
   private
 
   def video_params
-    params.require(:video).permit(:title, :description, :category_id)
+    params.require(:video).permit(:title, :description, :category_id, :large_cover, :large_cover_cache, :small_cover, :small_cover_cache)
   end
 
 end
