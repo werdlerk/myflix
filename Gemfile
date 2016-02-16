@@ -29,6 +29,7 @@ gem 'sentry-raven'
 
 # File uploads
 gem 'carrierwave'
+gem 'carrierwave-aws'
 gem 'mini_magick'
 
 group :development do
