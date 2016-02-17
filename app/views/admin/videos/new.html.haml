@@ -19,7 +19,7 @@
               .col-sm-3
                 = f.text_field :title, class: 'form-control'
             .form-group
-              = f.label :category, class: 'control-label col-sm-3'
+              = f.label :category_id, class: 'control-label col-sm-3'
               .col-sm-6
                 = f.select :category_id, options_from_collection_for_select(@categories, :id, :name), { include_blank: true }, class: 'form-control'
             .form-group
