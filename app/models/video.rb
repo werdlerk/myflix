@@ -3,8 +3,8 @@ class Video < ActiveRecord::Base
   has_many :reviews, -> { order('created_at DESC') }
   has_many :queue_items
 
-  mount_uploader :small_cover, CoverUploader
-  mount_uploader :large_cover, CoverUploader
+  mount_uploader :small_cover, SmallCoverUploader
+  mount_uploader :large_cover, LargeCoverUploader
 
   validates :title, :description, presence:true
 
