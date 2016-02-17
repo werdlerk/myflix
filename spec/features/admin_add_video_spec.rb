@@ -1,7 +1,7 @@
 require "spec_helper"
 
 feature "Admin adds a video" do
-  given(:admin) { Fabricate(:admin, email: "john@example.com", password: "Password", name: "John Doe") }
+  given(:admin) { Fabricate(:admin) }
   given!(:category) { Fabricate(:category) }
 
   given(:new_video) {
@@ -47,12 +47,17 @@ feature "Admin adds a video" do
 
     expect(page).to have_content "You have successfully added the video #{new_video[:title]}."
 
+    log_out
+
+    log_in_user
+
     click_link "Videos"
 
     expect(page).to have_content category.name
     find("section.content .video_category .video a").click
 
     expect(page).to have_content new_video[:title]
+    expect(page).to have_selector(".video_large_cover img[src='/uploads/bigbuckbunny_large_cover.jpg']")
     expect(page).to have_link("Watch Now", href: new_video[:video_url])
   end
 
