@@ -20,8 +20,3 @@ end
 
 # Default url options for view helpers in the tests
 Rails.application.routes.default_url_options = Rails.application.config.action_mailer.default_url_options
-
-CarrierWave.configure do |config|
-  config.storage = :file
-  config.enable_processing = false
-end
