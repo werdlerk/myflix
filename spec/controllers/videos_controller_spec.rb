@@ -34,6 +34,7 @@ describe VideosController do
       it 'sets the @reviews variable' do
         expect(assigns(:reviews)).to match_array Review.all
       end
+
       it 'sets the @review variable' do
         expect(assigns(:review)).to be_a_new(Review)
       end

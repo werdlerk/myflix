@@ -39,6 +39,12 @@
                   = f.file_field :small_cover, class: 'form-control'
                   = f.hidden_field :small_cover_cache
 
+            .form-group
+              = f.label :video_url, class: 'control-label col-sm-3'
+              .col-sm-6
+                %col.btn.btn-file
+                  = f.text_field :video_url, class: 'form-control'
+
           %fieldset.actions.form-group
             .col-sm-6.col-md-offset-3
               = f.submit 'Add Video', class: 'btn btn-default'

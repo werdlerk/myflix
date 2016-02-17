@@ -4,6 +4,7 @@ Fabricator(:video) do
   title Faker::Lorem.words(3).join(' ')
   description Faker::Lorem.paragraph
   category # { Fabricate(:category) }
+  video_url "https://videourl.com"
 end
 
 Fabricator(:video_with_covers, from: :video) do
