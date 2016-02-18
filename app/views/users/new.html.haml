@@ -14,4 +14,4 @@
 
         %fieldset.actions.control-group.col-sm-offset-2
           .controls
-            = f.submit 'Sign Up'
+            = render 'shared/stripe_checkout', button: 'Signup', name: 'MyFLiX Registration', description: '$9.99 to sign up for the best video service', amount: 999

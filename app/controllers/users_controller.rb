@@ -19,8 +19,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+    @user.stripe_customer_id = create_stripe_customer.id
 
     if @user.save
+      charge_stripe_customer
       handle_invitation
       flash[:success] = "Welcome, #{@user.name}! Your account has been created, please login below."
       UserMailer.delay.welcome(@user.id)
@@ -39,6 +41,31 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :name)
+  end
+
+  def create_stripe_customer
+    token = params[:stripeToken]
+
+    Stripe::Customer.create(
+      source: token,
+      description: @user.name
+    )
+  end
+
+  def charge_stripe_customer
+    customer_id = @user.stripe_customer_id
+    amount = 999
+
+    begin
+      Stripe::Charge.create(
+        amount: amount,
+        currency: "usd",
+        customer: customer_id,
+        description: "MyFLiX Signup fee for #{@user.email}"
+      )
+    rescue Stripe::CardError => e
+      flash[:danger] = e.message
+    end
   end
 
   def handle_invitation

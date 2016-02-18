@@ -32,6 +32,9 @@ gem 'carrierwave'
 gem 'carrierwave-aws'
 gem 'mini_magick'
 
+# Payment processing
+gem 'stripe'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
