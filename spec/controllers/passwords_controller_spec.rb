@@ -4,7 +4,7 @@ describe PasswordsController do
 
   describe 'GET #new' do
     it 'redirects logged in users to the home page' do
-      sign_in
+      set_current_user
 
       get :new
 
@@ -81,7 +81,7 @@ describe PasswordsController do
 
   describe 'GET #edit' do
     it 'redirects logged in users to the home page' do
-      sign_in
+      set_current_user
 
       get :edit
 
@@ -119,7 +119,7 @@ describe PasswordsController do
   describe 'PUT #update' do
 
     it 'redirects logged in users to the home page' do
-      sign_in
+      set_current_user
 
       put :update
 

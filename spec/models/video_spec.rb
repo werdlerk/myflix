@@ -10,13 +10,14 @@ describe Video do
   context 'validations' do
     it { should validate_presence_of(:title) }
     it { should validate_presence_of(:description) }
+    it { should validate_presence_of(:video_url) }
   end
 
   describe :search_by_title do
     before(:each) do
-      Video.create(title: 'Video one', description: 'Video one is awesome', created_at: 1.day.ago)
-      Video.create(title: 'Video two', description: 'Video two is awesome')
-      Video.create(title: 'Family Guy', description: 'Family Guy by Seth McFarland')
+      Fabricate(:video, title: 'Video one', description: 'Video one is awesome', created_at: 1.day.ago)
+      Fabricate(:video, title: 'Video two', description: 'Video two is awesome')
+      Fabricate(:video, title: 'Family Guy', description: 'Family Guy by Seth McFarland')
     end
 
     it 'returns an empty array when there is no match' do
@@ -52,7 +53,7 @@ describe Video do
 
   describe :average_rating do
     let(:video) do
-      Video.create(title: 'Video one', description: 'Video one is awesome')
+      Fabricate(:video, title: 'Video one', description: 'Video one is awesome')
     end
 
     it 'returns 0 when there are no comments' do

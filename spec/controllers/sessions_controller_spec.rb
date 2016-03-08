@@ -54,7 +54,16 @@ describe SessionsController do
       it "sets the flash success message" do
         expect(flash[:success]).to be_present
       end
+
+      context "as admin" do
+        let(:user) { Fabricate(:admin) }
+
+        it 'redirects to the admin page' do
+          expect(response).to redirect_to(admin_path)
+        end
+      end
     end
+
   end
 
   describe "GET #destroy" do

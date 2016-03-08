@@ -21,10 +21,10 @@ Myflix::Application.configure do
   config.action_mailer.default_url_options = { :host => 'myflix.codefish.org' }
 
   config.action_mailer.smtp_settings = {
-    address:              ENV['MAILGUN_SMTP_SERVER'],
-    port:                 ENV['MAILGUN_SMTP_PORT'],
-    user_name:            ENV['MAILGUN_SMTP_LOGIN'],
-    password:             ENV['MAILGUN_SMTP_PASSWORD'],
+    address:              ENV.fetch('MAILGUN_SMTP_SERVER'),
+    port:                 ENV.fetch('MAILGUN_SMTP_PORT'),
+    user_name:            ENV.fetch('MAILGUN_SMTP_LOGIN'),
+    password:             ENV.fetch('MAILGUN_SMTP_PASSWORD'),
     domain:               'cf-myflix.herokuapp.com',
     authentication:       :plain
   }

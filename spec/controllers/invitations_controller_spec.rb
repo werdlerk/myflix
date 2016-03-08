@@ -9,7 +9,7 @@ describe InvitationsController do
 
     context 'authenticated users' do
       before do
-        sign_in
+        set_current_user
 
         get :new
       end
@@ -34,7 +34,7 @@ describe InvitationsController do
     context 'authenticated users' do
       let(:user) { Fabricate(:user) }
 
-      before { sign_in(user) }
+      before { set_current_user(user) }
 
       context 'with valid input' do
         before { post :create, invitation: invitation_params }

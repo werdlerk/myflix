@@ -41,6 +41,11 @@ Myflix::Application.routes.draw do
   get 'my_queue', to: 'queue_items#index'
   get 'people', to: 'relationships#index'
 
+  namespace :admin do
+    get '/', action: 'home'
+    resources :videos, only: [:new, :create]
+  end
+
   # Mockups
   get 'ui(/:action)', controller: 'ui'
 

@@ -17,6 +17,14 @@ describe UsersController do
   end
 
   describe 'POST #create' do
+    let(:stripe_customer) { double(Stripe::Customer) }
+
+    before do
+      allow(Stripe::Customer).to receive(:create).and_return stripe_customer
+      allow(Stripe::Charge).to receive(:create)
+      allow(stripe_customer).to receive(:id).and_return "123asd"
+    end
+
     context "with valid input" do
       it 'creates the user' do
         post :create, user: Fabricate.attributes_for(:user)
@@ -136,7 +144,7 @@ describe UsersController do
     end
 
     it "should set the @user variable" do
-      sign_in
+      set_current_user
       get :show, id: user.id
       expect(assigns(:user)).to eq(user)
     end

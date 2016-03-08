@@ -27,6 +27,14 @@ gem 'puma'
 # Error reporting
 gem 'sentry-raven'
 
+# File uploads
+gem 'carrierwave'
+gem 'carrierwave-aws'
+gem 'mini_magick'
+
+# Payment processing
+gem 'stripe'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
