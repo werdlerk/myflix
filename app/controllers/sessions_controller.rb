@@ -2,7 +2,7 @@ class SessionsController < ApplicationController
   before_action :disallow_authenticated_users, only: [:new, :create]
 
   def create
-    user = User.find_by_email(params[:email])
+    user = User.find_by(email: params[:email])
 
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
