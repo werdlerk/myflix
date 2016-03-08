@@ -20,10 +20,6 @@ describe LargeCoverUploader do
     @uploader.remove!
   end
 
-  it "should make the image readable only to the owner and not executable" do
-    expect(@uploader).to have_permissions(0644)
-  end
-
   it "should resize to fill the image to be 665 by 375 pixels" do
     expect(@uploader).to have_dimensions(665, 375)
   end
