@@ -17,12 +17,11 @@ describe UsersController do
   end
 
   describe 'POST #create' do
-    let(:stripe_customer) { double(Stripe::Customer) }
+    let(:stripe_charge) { double(Stripe::Charge) }
 
     before do
-      allow(Stripe::Customer).to receive(:create).and_return stripe_customer
-      allow(Stripe::Charge).to receive(:create)
-      allow(stripe_customer).to receive(:id).and_return "123asd"
+      allow(StripeWrapper::Charge).to receive(:create).and_return stripe_charge
+      allow(stripe_charge).to receive_messages(succesful?: true, customer_id: "ABC123")
     end
 
     context "with valid input" do

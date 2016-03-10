@@ -20,11 +20,11 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    begin
-      if @user.valid?
-        create_stripe_customer
-        charge_stripe_customer
+    if @user.valid?
+      charge = StripeWrapper::Charge.create(token: params[:stripeToken], customer: @user.name, amount: 999, description: "MyFLiX Signup fee for #{@user.email}")
 
+      if charge.succesful?
+        @user.stripe_customer_id = charge.customer_id
         @user.save
         handle_invitation
         flash[:success] = "Welcome, #{@user.name}! Your account has been created, please login below."
@@ -32,11 +32,11 @@ class UsersController < ApplicationController
 
         redirect_to login_path
       else
+        flash[:danger] = charge.error_message
         render 'new'
       end
 
-    rescue Stripe::CardError => e
-      flash[:danger] = e.message
+    else
       render 'new'
     end
   end
@@ -49,28 +49,6 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :name)
-  end
-
-  def create_stripe_customer
-    token = params[:stripeToken]
-
-    stripe_customer = Stripe::Customer.create(
-                        source: token,
-                        description: @user.name
-                      )
-    @user.stripe_customer_id = stripe_customer.id
-  end
-
-  def charge_stripe_customer
-    customer_id = @user.stripe_customer_id
-    amount = 999
-
-    Stripe::Charge.create(
-      amount: amount,
-      currency: "usd",
-      customer: customer_id,
-      description: "MyFLiX Signup fee for #{@user.email}"
-    )
   end
 
   def handle_invitation
