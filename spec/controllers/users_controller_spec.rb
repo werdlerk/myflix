@@ -103,6 +103,34 @@ describe UsersController do
         expect(ActionMailer::Base.deliveries).to be_empty
       end
     end
+
+    context 'with failed Stripe::Charge' do
+      before do
+        allow(stripe_charge).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
+
+        post :create, user: Fabricate.attributes_for(:user)
+      end
+
+      it 'does not create the user' do
+        expect(User.count).to eq(0)
+      end
+
+      it 'renders the new page for form errors' do
+        expect(response).to render_template 'new'
+      end
+
+      it 'sets the @user variable' do
+        expect(assigns(:user)).to be_a_new(User)
+      end
+
+      it 'does not send an email' do
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'sets the flash message' do
+        expect(flash[:danger]).to eq 'Something went wrong :-('
+      end
+    end
   end
 
   describe 'GET #new_with_invitation' do
