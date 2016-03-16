@@ -55,6 +55,7 @@ group :test do
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'capybara-email'
+  gem 'selenium-webdriver'
   gem 'launchy'
   gem 'webmock'
   gem 'vcr'

@@ -1,10 +1,8 @@
 require "spec_helper"
 
-feature "Invite a friend" do
+feature "Invite a friend", :vcr, js: true do
   given(:user) { Fabricate(:user, email: "john@example.com", password: "Password", name: "John Doe") }
   given(:friend) { { name: "Bob Hope", email: "Bob@example.org", message: "This is awesome!", password: "My_Awesome_Password_9876" } }
-
-  before { skip }
 
   scenario "invite a friend to signup for MyFlix" do
     log_in_user(user)
@@ -23,6 +21,7 @@ feature "Invite a friend" do
   end
 
   def user_sends_invitation
+    click_link "Welcome, #{user.name}"
     click_link "Invite a friend"
     expect(page).to have_content "Invite a friend to join MyFlix!"
 
@@ -46,6 +45,10 @@ feature "Invite a friend" do
     expect(page).to have_field "Email Address", with: friend[:email]
     expect(page).to have_field "Full Name", with: friend[:name]
     fill_in "Password", with: friend[:password]
+    fill_in "Credit Card Number", with: "4242424242424242"
+    fill_in "Security Code", with: "123"
+    select "3 - March", from: "date_month"
+    select 1.year.from_now.year, from: "date_year"
     click_button "Sign Up"
 
     expect(page).to have_content "Welcome, #{friend[:name]}! Your account has been created, please login below."
