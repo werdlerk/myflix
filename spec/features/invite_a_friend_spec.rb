@@ -44,6 +44,7 @@ feature "Invite a friend", :vcr, js: true do
     expect(page).to have_content "Register"
     expect(page).to have_field "Email Address", with: friend[:email]
     expect(page).to have_field "Full Name", with: friend[:name]
+
     fill_in "Password", with: friend[:password]
     fill_in "Credit Card Number", with: "4242424242424242"
     fill_in "Security Code", with: "123"

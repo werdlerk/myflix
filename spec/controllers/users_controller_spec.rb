@@ -102,6 +102,12 @@ describe UsersController do
       it 'does not send an email' do
         expect(ActionMailer::Base.deliveries).to be_empty
       end
+
+      it 'does not charge using Stripe' do
+        expect(StripeWrapper::Charge).not_to receive(:create)
+
+        post :create, { user: { name: 'Koen' } }
+      end
     end
 
     context 'with failed Stripe::Charge' do
