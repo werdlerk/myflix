@@ -37,6 +37,7 @@ class UsersController < ApplicationController
       end
 
     else
+      flash[:danger] = "There was an error creating your account. Please check the errors below."
       render 'new'
     end
   end

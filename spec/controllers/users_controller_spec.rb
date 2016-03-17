@@ -108,6 +108,10 @@ describe UsersController do
 
         post :create, { user: { name: 'Koen' } }
       end
+
+      it 'sets the flash message' do
+        expect(flash[:danger]).to be_present
+      end
     end
 
     context 'with failed Stripe::Charge' do
