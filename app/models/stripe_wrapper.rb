@@ -26,7 +26,7 @@ module StripeWrapper
         new(:success, customer: customer, charge: charge)
 
       rescue Stripe::CardError => e
-        new(e, error: e)
+        new(:error, error: e)
       end
     end
 
