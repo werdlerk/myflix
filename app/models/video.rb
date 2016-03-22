@@ -16,8 +16,4 @@ class Video < ActiveRecord::Base
   def average_rating
     reviews.average(:rating).to_f.round(1)
   end
-
-  def decorator
-    VideoDecorator.new(self)
-  end
 end

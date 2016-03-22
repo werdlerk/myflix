@@ -2,15 +2,15 @@
   .container
     .row
       .video_large_cover.col-sm-7.col-sm-offset-1
-        %img(src="#{@decorator.large_cover_url}" width=665 height=375)
+        %img(src="#{@video.large_cover_url}" width=665 height=375)
       .video_info.col-sm-3
         %header
-          %h3 #{@decorator.title}
+          %h3 #{@video.title}
           %span
-            Rating: #{@decorator.rating}
-        #{simple_format(@decorator.description)}
+            Rating: #{@video.rating}
+        #{simple_format(@video.description)}
         .actions
-          = link_to "Watch Now", @decorator.video_url, class:'btn btn-primary'
+          = link_to "Watch Now", @video.video_url, class:'btn btn-primary'
           - unless current_user.queued_video?(@video)
             = link_to "+ My Queue", queue_items_path(video_id: @video.id), class:'btn btn-default', method: :post
 

@@ -81,6 +81,11 @@ GEM
     diff-lcs (1.2.5)
     domain_name (0.5.20160128)
       unf (>= 0.0.5, < 1.0.0)
+    draper (2.1.0)
+      actionpack (>= 3.0)
+      activemodel (>= 3.0)
+      activesupport (>= 3.0)
+      request_store (~> 1.0)
     erubis (2.7.0)
     execjs (2.0.2)
     fabrication (2.12.2)
@@ -161,6 +166,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (10.4.2)
     redis (3.2.2)
+    request_store (1.3.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -261,6 +267,7 @@ DEPENDENCIES
   carrierwave-aws
   coffee-rails
   database_cleaner (= 1.2.0)
+  draper
   fabrication
   faker
   figaro

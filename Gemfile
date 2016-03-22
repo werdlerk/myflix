@@ -35,6 +35,9 @@ gem 'mini_magick'
 # Payment processing
 gem 'stripe'
 
+# Decorator support
+gem 'draper'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

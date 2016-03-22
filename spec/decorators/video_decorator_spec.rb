@@ -1,14 +1,8 @@
 require 'spec_helper'
 
 describe VideoDecorator do
-  let(:video) { Fabricate(:video, title: 'My little pony', description: 'Animated horses', video_url: 'http://youtube.com') }
-  let(:decorator) { VideoDecorator.new(video) }
-
-  describe '#title' do
-    it 'returns the video title' do
-      expect(decorator.title).to eq 'My little pony'
-    end
-  end
+  let(:video) { Fabricate(:video) }
+  let(:decorator) { video.decorate }
 
   describe '#rating' do
     context 'with video having a review' do
@@ -27,21 +21,4 @@ describe VideoDecorator do
     end
   end
 
-  describe '#description' do
-    it 'shows the video description' do
-      expect(decorator.description).to eq 'Animated horses'
-    end
-  end
-
-  describe '#large_cover_url' do
-    it 'shows the large_cover_url' do
-      expect(decorator.large_cover_url).to eq video.large_cover_url
-    end
-  end
-
-  describe '#video_url' do
-    it 'shows the video url' do
-      expect(decorator.video_url).to eq 'http://youtube.com'
-    end
-  end
 end
