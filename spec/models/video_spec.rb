@@ -73,11 +73,4 @@ describe Video do
       expect(video.average_rating).to eq 2.7
     end
   end
-
-  describe '#decorator' do
-    it 'returns an instantiated VideoDecorator' do
-      video = Fabricate(:video)
-      expect(video.decorator).to be_an_instance_of VideoDecorator
-    end
-  end
 end
