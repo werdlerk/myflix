@@ -6,8 +6,9 @@ class VideosController < AuthenticatedController
 
   def show
     @video = Video.find(params[:id])
-    @reviews = @video.reload.reviews.includes(:author)
+    @reviews = @video.reviews.includes(:author).reload
     @review = Review.new
+    @decorator = @video.decorator
   end
 
   def search
