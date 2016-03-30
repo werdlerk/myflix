@@ -19,7 +19,7 @@ class UserSignup
 
         if charge.succesful?
           @user.save
-          handle_invitation(invitation_token)
+          handle_invitation(invitation_token) if invitation_token.present?
 
           UserMailer.delay.welcome(@user.id)
         else
@@ -43,12 +43,10 @@ class UserSignup
   private
 
   def handle_invitation(invitation_token)
-    if invitation_token
-      invitation = Invitation.find_by(token: invitation_token)
+    invitation = Invitation.find_by(token: invitation_token)
 
-      @user.follow!(invitation.author)
-      invitation.author.follow!(@user)
-      invitation.clear_token!
-    end
+    @user.follow!(invitation.author)
+    invitation.author.follow!(@user)
+    invitation.clear_token!
   end
 end
