@@ -3,12 +3,15 @@ require 'spec_helper'
 describe UserSignup do
 
   describe '#sign_up' do
+    let(:stripe_customer) { double(Stripe::Customer) }
     let(:stripe_charge) { double(Stripe::Charge) }
     let(:service) { UserSignup.new(user) }
 
     before do
+      allow(StripeWrapper::Customer).to receive(:create).and_return stripe_customer
+      allow(stripe_customer).to receive_messages(succesful?: true, id: "ABC123")
       allow(StripeWrapper::Charge).to receive(:create).and_return stripe_charge
-      allow(stripe_charge).to receive_messages(succesful?: true, customer_id: "ABC123")
+      allow(stripe_charge).to receive_messages(succesful?: true)
     end
 
     context 'with valid input' do
@@ -106,6 +109,7 @@ describe UserSignup do
       end
 
       it 'does not charge using Stripe' do
+        expect(StripeWrapper::Customer).not_to receive(:create)
         expect(StripeWrapper::Charge).not_to receive(:create)
 
         service.sign_up
@@ -117,6 +121,28 @@ describe UserSignup do
 
       before do
         allow(stripe_charge).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
+
+        service.sign_up
+      end
+
+      it 'does not create the user' do
+        expect(User.count).to eq(0)
+      end
+
+      it 'does not send an email' do
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it 'sets the error message' do
+        expect(service.error_message).to eq 'Something went wrong :-('
+      end
+    end
+
+    context 'with failed Stripe::Customer' do
+      let(:user) { Fabricate.build(:user) }
+
+      before do
+        allow(stripe_customer).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
 
         service.sign_up
       end

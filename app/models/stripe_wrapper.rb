@@ -2,11 +2,10 @@ module StripeWrapper
 
   DEFAULT_CURRENCY = "usd"
 
-  class Charge
+  class Customer
     def initialize(status, responses = {})
       @status = status
       @customer = responses[:customer]
-      @charge = responses[:charge]
       @error = responses[:error]
     end
 
@@ -16,14 +15,7 @@ module StripeWrapper
           source: options[:token],
           description: options[:customer]
         )
-
-        charge = Stripe::Charge.create(
-          amount: options[:amount],
-          currency: options[:currency] || DEFAULT_CURRENCY,
-          customer: customer.id,
-          description: options[:description]
-        )
-        new(:success, customer: customer, charge: charge)
+        new(:success, customer: customer)
 
       rescue Stripe::CardError => e
         new(:error, error: e)
@@ -38,8 +30,41 @@ module StripeWrapper
       @error.message unless succesful?
     end
 
-    def customer_id
+    def id
       @customer.id if succesful?
+    end
+  end
+
+  class Charge
+    def initialize(status, responses = {})
+      @status = status
+      @charge = responses[:charge]
+      @error = responses[:error]
+    end
+
+    def self.create(options = {})
+      begin
+        charge = Stripe::Charge.create(
+          amount: options[:amount],
+          currency: options[:currency] || DEFAULT_CURRENCY,
+          customer: options[:customer_id],
+          description: options[:description]
+        )
+        new(:success, charge: charge)
+
+      rescue Stripe::InvalidRequestError => e
+        new(:error, error: e)
+      rescue Stripe::CardError => e
+        new(:error, error: e)
+      end
+    end
+
+    def succesful?
+      @status == :success
+    end
+
+    def error_message
+      @error.message unless succesful?
     end
   end
 

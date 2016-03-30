@@ -8,27 +8,32 @@ class UserSignup
   def sign_up(options = {})
     stripe_token = options[:stripe_token]
     invitation_token = options[:invitation_token]
+
     if @user.valid?
-      charge = StripeWrapper::Charge.create(token: stripe_token, customer: @user.name, amount: 999, description: "MyFLiX Signup fee for #{@user.email}")
+      customer = StripeWrapper::Customer.create(token: stripe_token, customer: @user.name)
 
-      if charge.succesful?
-        @user.stripe_customer_id = charge.customer_id
-        @user.save
-        handle_invitation(invitation_token)
+      if customer.succesful?
+        @user.stripe_customer_id = customer.id
 
-        UserMailer.delay.welcome(@user.id)
-        @status = :success
-        self
+        charge = StripeWrapper::Charge.create(customer_id: customer.id, amount: 999, description: "MyFLiX Signup fee for #{@user.email}")
+
+        if charge.succesful?
+          @user.save
+          handle_invitation(invitation_token)
+
+          UserMailer.delay.welcome(@user.id)
+        else
+          @error_message = charge.error_message
+        end
       else
-        @status = :failed
-        @error_message = charge.error_message
-        self
+        @error_message = customer.error_message
       end
     else
-      @status = :failed
       @error_message = "There was an error creating your account. Please check the errors below."
-      self
     end
+
+    @status = @error_message.present? ? :failed : :success
+    self
   end
 
   def succesful?
