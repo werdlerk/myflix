@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       flash[:success] = "Welcome, #{@user.name}! Your account has been created, please login below."
       redirect_to login_path
     else
-      flash[:danger] = result.error_message
+      flash.now[:danger] = result.error_message
       render 'new'
     end
   end
