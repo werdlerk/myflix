@@ -5,6 +5,7 @@ describe UserSignup do
   describe '#sign_up' do
     let(:stripe_customer) { double(Stripe::Customer) }
     let(:stripe_charge) { double(Stripe::Charge) }
+    let(:stripe_token) { "ABC" }
     let(:service) { UserSignup.new(user) }
 
     before do
@@ -18,19 +19,19 @@ describe UserSignup do
       let(:user) { Fabricate.build(:user) }
 
       it 'sets the status to success' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(service.status).to eq :success
       end
 
       it 'has no error message' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(service.error_message).to be_nil
       end
 
       it 'creates the user' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(user).to be_persisted
         expect(User.count).to eq(1)
@@ -38,7 +39,7 @@ describe UserSignup do
 
       context 'send welcome email' do
         before do
-          service.sign_up
+          service.sign_up(stripe_token: stripe_token)
         end
 
         it 'sends an email' do
@@ -62,7 +63,7 @@ describe UserSignup do
         let(:user) { Fabricate.build(:user, email: 'john@example.com', password:'Password!', name: 'John Hope') }
 
         before do
-          service.sign_up(invitation_token: invitation.token)
+          service.sign_up(stripe_token: stripe_token, invitation_token: invitation.token)
         end
 
         it 'makes the user follow the inviter' do
@@ -85,25 +86,25 @@ describe UserSignup do
       let(:user) { Fabricate.build(:user, password: nil) }
 
       it 'sets the status to failed' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(service.status).to eq :failed
       end
 
       it 'sets the error message' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(service.error_message).to be_present
       end
 
       it 'does not create the user' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(User.count).to eq(0)
       end
 
       it 'does not send an email' do
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
 
         expect(ActionMailer::Base.deliveries).to be_empty
       end
@@ -122,7 +123,7 @@ describe UserSignup do
       before do
         allow(stripe_charge).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
 
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
       end
 
       it 'does not create the user' do
@@ -144,7 +145,7 @@ describe UserSignup do
       before do
         allow(stripe_customer).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
 
-        service.sign_up
+        service.sign_up(stripe_token: stripe_token)
       end
 
       it 'does not create the user' do
