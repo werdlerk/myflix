@@ -14,17 +14,10 @@ class UserSignup
 
       if customer.succesful?
         @user.stripe_customer_id = customer.id
+        @user.save
+        handle_invitation(invitation_token) if invitation_token.present?
 
-        charge = StripeWrapper::Charge.create(customer_id: customer.id, amount: 999, description: "MyFLiX Signup fee for #{@user.email}")
-
-        if charge.succesful?
-          @user.save
-          handle_invitation(invitation_token) if invitation_token.present?
-
-          UserMailer.delay.welcome(@user.id)
-        else
-          @error_message = charge.error_message
-        end
+        UserMailer.delay.welcome(@user.id)
       else
         @error_message = customer.error_message
       end
