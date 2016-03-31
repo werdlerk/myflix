@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 30 Mar 2016 20:24:02 GMT
+      - Thu, 31 Mar 2016 19:30:44 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8BCFLbgx7VBuyl
+      - req_8BYceIPKZy2605
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -58,10 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_17uprCFdcisUpWXbw6ChItS1",
+          "id": "tok_17vBVAFdcisUpWXbPqzMQaRf",
           "object": "token",
           "card": {
-            "id": "card_17uprCFdcisUpWXbb4l2NR43",
+            "id": "card_17vBVAFdcisUpWXbTl53QvGg",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -85,19 +85,19 @@ http_interactions:
             "tokenization_method": null
           },
           "client_ip": "83.80.250.29",
-          "created": 1459369442,
+          "created": 1459452644,
           "livemode": false,
           "type": "card",
           "used": false
         }
     http_version: 
-  recorded_at: Wed, 30 Mar 2016 20:24:02 GMT
+  recorded_at: Thu, 31 Mar 2016 19:30:44 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: description=Klaas+Vaak&source=tok_17uprCFdcisUpWXbw6ChItS1
+      string: description=Klaas+Vaak&plan=myflix&source=tok_17vBVAFdcisUpWXbPqzMQaRf
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -114,7 +114,7 @@ http_interactions:
         Morgenwerk-Koen.local 14.5.0 Darwin Kernel Version 14.5.0: Tue Sep  1 21:23:09
         PDT 2015; root:xnu-2782.50.1~1/RELEASE_X86_64 x86_64","hostname":"Morgenwerk-Koen.local"}'
       Content-Length:
-      - '58'
+      - '70'
   response:
     status:
       code: 200
@@ -123,11 +123,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 30 Mar 2016 20:24:03 GMT
+      - Thu, 31 Mar 2016 19:30:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1387'
+      - '2364'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -141,7 +141,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8BCFerQr5Poj0p
+      - req_8BYcBZkuHIV0xA
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -150,12 +150,12 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_8BCFB8mCUEI2zu",
+          "id": "cus_8BYczAN7axz400",
           "object": "customer",
           "account_balance": 0,
-          "created": 1459369443,
-          "currency": null,
-          "default_source": "card_17uprCFdcisUpWXbb4l2NR43",
+          "created": 1459452645,
+          "currency": "usd",
+          "default_source": "card_17vBVAFdcisUpWXbTl53QvGg",
           "delinquent": false,
           "description": "Klaas Vaak",
           "discount": null,
@@ -167,7 +167,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_17uprCFdcisUpWXbb4l2NR43",
+                "id": "card_17vBVAFdcisUpWXbTl53QvGg",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -179,7 +179,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_8BCFB8mCUEI2zu",
+                "customer": "cus_8BYczAN7axz400",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 3,
@@ -194,24 +194,58 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_8BCFB8mCUEI2zu/sources"
+            "url": "/v1/customers/cus_8BYczAN7axz400/sources"
           },
           "subscriptions": {
             "object": "list",
-            "data": [],
+            "data": [
+              {
+                "id": "sub_8BYcGM4cNuYfex",
+                "object": "subscription",
+                "application_fee_percent": null,
+                "cancel_at_period_end": false,
+                "canceled_at": null,
+                "current_period_end": 1462044645,
+                "current_period_start": 1459452645,
+                "customer": "cus_8BYczAN7axz400",
+                "discount": null,
+                "ended_at": null,
+                "metadata": {},
+                "plan": {
+                  "id": "myflix",
+                  "object": "plan",
+                  "amount": 999,
+                  "created": 1459451909,
+                  "currency": "usd",
+                  "interval": "month",
+                  "interval_count": 1,
+                  "livemode": false,
+                  "metadata": {},
+                  "name": "MyFlix",
+                  "statement_descriptor": "MyFlix Subscription",
+                  "trial_period_days": null
+                },
+                "quantity": 1,
+                "start": 1459452645,
+                "status": "active",
+                "tax_percent": null,
+                "trial_end": null,
+                "trial_start": null
+              }
+            ],
             "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_8BCFB8mCUEI2zu/subscriptions"
+            "total_count": 1,
+            "url": "/v1/customers/cus_8BYczAN7axz400/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Wed, 30 Mar 2016 20:24:03 GMT
+  recorded_at: Thu, 31 Mar 2016 19:30:46 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: US-ASCII
-      string: amount=0&currency=usd&customer=cus_8BCFB8mCUEI2zu&description=signup+fee
+      string: amount=0&currency=usd&customer=cus_8BYczAN7axz400&description=signup+fee
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -237,7 +271,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 30 Mar 2016 20:24:04 GMT
+      - Thu, 31 Mar 2016 19:30:46 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -255,7 +289,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8BCFb8CMWG0SXy
+      - req_8BYcHv9wbMtzaI
       Stripe-Version:
       - '2016-02-03'
     body:
@@ -269,5 +303,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Wed, 30 Mar 2016 20:24:04 GMT
+  recorded_at: Thu, 31 Mar 2016 19:30:47 GMT
 recorded_with: VCR 3.0.1

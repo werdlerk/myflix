@@ -31,7 +31,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 30 Mar 2016 20:20:24 GMT
+      - Thu, 31 Mar 2016 19:30:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8BCCzvou8b02tA
+      - req_8BYcawgX0wbpQL
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -58,10 +58,10 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "tok_17upngFdcisUpWXbOVNRAza7",
+          "id": "tok_17vBUsFdcisUpWXbyJBnmtsK",
           "object": "token",
           "card": {
-            "id": "card_17upngFdcisUpWXbKg2iUUSv",
+            "id": "card_17vBUsFdcisUpWXb0AHEGKaB",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -85,19 +85,19 @@ http_interactions:
             "tokenization_method": null
           },
           "client_ip": "83.80.250.29",
-          "created": 1459369224,
+          "created": 1459452626,
           "livemode": false,
           "type": "card",
           "used": false
         }
     http_version: 
-  recorded_at: Wed, 30 Mar 2016 20:20:24 GMT
+  recorded_at: Thu, 31 Mar 2016 19:30:27 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: US-ASCII
-      string: description=Klaas+Vaak&source=tok_17upngFdcisUpWXbOVNRAza7
+      string: description=Klaas+Vaak&email=klaas%40example.com&plan=myflix&source=tok_17vBUsFdcisUpWXbyJBnmtsK
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -114,7 +114,7 @@ http_interactions:
         Morgenwerk-Koen.local 14.5.0 Darwin Kernel Version 14.5.0: Tue Sep  1 21:23:09
         PDT 2015; root:xnu-2782.50.1~1/RELEASE_X86_64 x86_64","hostname":"Morgenwerk-Koen.local"}'
       Content-Length:
-      - '58'
+      - '96'
   response:
     status:
       code: 200
@@ -123,11 +123,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 30 Mar 2016 20:20:25 GMT
+      - Thu, 31 Mar 2016 19:30:28 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1387'
+      - '2379'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -141,7 +141,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8BCCQ3yu4nFgej
+      - req_8BYcy0H0thdpcE
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -150,16 +150,16 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_8BCCsadfdsHQcy",
+          "id": "cus_8BYcDaSTMBkjqj",
           "object": "customer",
           "account_balance": 0,
-          "created": 1459369225,
-          "currency": null,
-          "default_source": "card_17upngFdcisUpWXbKg2iUUSv",
+          "created": 1459452627,
+          "currency": "usd",
+          "default_source": "card_17vBUsFdcisUpWXb0AHEGKaB",
           "delinquent": false,
           "description": "Klaas Vaak",
           "discount": null,
-          "email": null,
+          "email": "klaas@example.com",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -167,7 +167,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_17upngFdcisUpWXbKg2iUUSv",
+                "id": "card_17vBUsFdcisUpWXb0AHEGKaB",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -179,7 +179,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_8BCCsadfdsHQcy",
+                "customer": "cus_8BYcDaSTMBkjqj",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 3,
@@ -194,16 +194,50 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_8BCCsadfdsHQcy/sources"
+            "url": "/v1/customers/cus_8BYcDaSTMBkjqj/sources"
           },
           "subscriptions": {
             "object": "list",
-            "data": [],
+            "data": [
+              {
+                "id": "sub_8BYciTem5tfhRZ",
+                "object": "subscription",
+                "application_fee_percent": null,
+                "cancel_at_period_end": false,
+                "canceled_at": null,
+                "current_period_end": 1462044627,
+                "current_period_start": 1459452627,
+                "customer": "cus_8BYcDaSTMBkjqj",
+                "discount": null,
+                "ended_at": null,
+                "metadata": {},
+                "plan": {
+                  "id": "myflix",
+                  "object": "plan",
+                  "amount": 999,
+                  "created": 1459451909,
+                  "currency": "usd",
+                  "interval": "month",
+                  "interval_count": 1,
+                  "livemode": false,
+                  "metadata": {},
+                  "name": "MyFlix",
+                  "statement_descriptor": "MyFlix Subscription",
+                  "trial_period_days": null
+                },
+                "quantity": 1,
+                "start": 1459452627,
+                "status": "active",
+                "tax_percent": null,
+                "trial_end": null,
+                "trial_start": null
+              }
+            ],
             "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_8BCCsadfdsHQcy/subscriptions"
+            "total_count": 1,
+            "url": "/v1/customers/cus_8BYcDaSTMBkjqj/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Wed, 30 Mar 2016 20:20:25 GMT
+  recorded_at: Thu, 31 Mar 2016 19:30:28 GMT
 recorded_with: VCR 3.0.1

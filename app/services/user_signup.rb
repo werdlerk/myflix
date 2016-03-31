@@ -10,7 +10,7 @@ class UserSignup
     invitation_token = options[:invitation_token]
 
     if @user.valid?
-      customer = StripeWrapper::Customer.create(token: stripe_token, customer: @user.name)
+      customer = StripeWrapper::Customer.create(token: stripe_token, customer: @user.name, email: @user.email)
 
       if customer.succesful?
         @user.stripe_customer_id = customer.id
