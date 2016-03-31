@@ -17,79 +17,32 @@ describe UsersController do
   end
 
   describe 'POST #create' do
-    let(:stripe_customer) { double(Stripe::Customer) }
 
     before do
-      allow(Stripe::Customer).to receive(:create).and_return stripe_customer
-      allow(Stripe::Charge).to receive(:create)
-      allow(stripe_customer).to receive(:id).and_return "123asd"
+      expect_any_instance_of(UserSignup).to receive(:sign_up).and_return(user_signup)
     end
 
-    context "with valid input" do
-      it 'creates the user' do
-        post :create, user: Fabricate.attributes_for(:user)
+    context "successful user sign up" do
+      let(:user_signup) { double(UserSignup, succesful?: true) }
 
-        expect(assigns(:user)).to be_persisted
-        expect(User.count).to eq(1)
-      end
-
-      it 'redirects to the login page with the flash message' do
+      it 'redirects to the login page' do
         post :create, user: Fabricate.attributes_for(:user)
 
         expect(response).to redirect_to login_path
       end
 
-      context 'send welcome email' do
-        before do
-          post :create, user: Fabricate.attributes_for(:user)
-        end
+      it 'sets the flash message' do
+        post :create, user: Fabricate.attributes_for(:user)
 
-        it 'sends an email' do
-          expect(ActionMailer::Base.deliveries.count).to eq 1
-        end
-
-        it 'sends to the right recipient' do
-          message = ActionMailer::Base.deliveries.last
-          expect(message.to).to eq [ User.first.email ]
-        end
-
-        it "has the right content" do
-          email = ActionMailer::Base.deliveries.last
-          expect(email.body.encoded).to include User.first.name
-        end
-      end
-
-      context 'with invitation' do
-        let(:inviter) { Fabricate(:user) }
-        let(:invitation) { Fabricate(:invitation, author: inviter) }
-
-        before do
-          post :create, user: { email: 'john@example.com', password:'Password!', name: 'John Hope'}, invitation_token: invitation.token
-        end
-
-        it 'makes the user follow the inviter' do
-          john = User.find_by(email: 'john@example.com')
-          expect(john.follows?(inviter)).to eq true
-        end
-
-        it 'makes the inviter follow the user' do
-          john = User.find_by(email: 'john@example.com')
-          expect(inviter.follows?(john)).to eq true
-        end
-
-        it 'expires the invitation upon access' do
-          expect(Invitation.first.token).to be_nil
-        end
+        expect(flash[:success]).to be_present
       end
     end
 
-    context "with invalid input" do
-      before do
-        post :create, { user: { name: 'Koen' } }
-      end
+    context "failed user sign up" do
+      let(:user_signup) { double(UserSignup, succesful?: false, error_message: 'Something went wrong') }
 
-      it 'does not create the user' do
-        expect(User.count).to eq(0)
+      before do
+        post :create, user: Fabricate.attributes_for(:user)
       end
 
       it 'renders the new page for form errors' do
@@ -100,8 +53,8 @@ describe UsersController do
         expect(assigns(:user)).to be_a_new(User)
       end
 
-      it 'does not send an email' do
-        expect(ActionMailer::Base.deliveries).to be_empty
+      it 'sets the flash message' do
+        expect(flash[:danger]).to eq 'Something went wrong'
       end
     end
   end

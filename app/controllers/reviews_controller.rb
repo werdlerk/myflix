@@ -9,6 +9,7 @@ class ReviewsController < AuthenticatedController
       redirect_to video_path(@video)
     else
       @reviews = @video.reviews.includes(:author).reload
+      @video = @video.decorate
       render 'videos/show'
     end
   end

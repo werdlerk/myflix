@@ -35,6 +35,9 @@ gem 'mini_magick'
 # Payment processing
 gem 'stripe'
 
+# Decorator support
+gem 'draper'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
@@ -55,7 +58,10 @@ group :test do
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'capybara-email'
+  gem 'selenium-webdriver'
   gem 'launchy'
+  gem 'webmock'
+  gem 'vcr'
 
   # Add test metadata collection for CircleCI
   gem 'rspec_junit_formatter', '0.2.2'

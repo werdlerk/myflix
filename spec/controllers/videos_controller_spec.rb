@@ -27,8 +27,8 @@ describe VideosController do
         get :show, id: video.id
       end
 
-      it 'sets the @video variable' do
-        expect(assigns(:video)).to eq(video)
+      it 'sets the @video to the VideoDecorator' do
+        expect(assigns(:video)).to be_decorated_with VideoDecorator
       end
 
       it 'sets the @reviews variable' do
