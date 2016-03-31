@@ -1,6 +1,6 @@
 module StripeWrapper
 
-  DEFAULT_PLAN = "myflix"
+  DEFAULT_PLAN = "base"
   DEFAULT_CURRENCY = "usd"
 
   class Customer
