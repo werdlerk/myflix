@@ -34,7 +34,7 @@ describe 'Stripe Events' do
       end
 
       it 'sets the stripe charge id as the reference' do
-        expect(Payment.last.reference).to eq 'ch_17vBtuFdcisUpWXbVrJHFIEf'
+        expect(Payment.last.reference_id).to eq 'ch_17vBtuFdcisUpWXbVrJHFIEf'
       end
     end
 
