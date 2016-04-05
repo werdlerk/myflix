@@ -3,15 +3,7 @@
     .row
       .col-md-10.col-md-offset-1
         = form_for [:admin, @video], html: { class: 'form-horizontal' } do |f|
-          %ul.nav.nav-tabs
-            %li
-              = link_to admin_path do
-                %span.glyphicon.glyphicon-home
-            %li
-              %a(href="") Recent Payments
-            %li.active
-              = link_to 'Add a New Video', new_admin_video_path
-          %br
+          = render 'admin/navigation'
           = render 'shared/validation_messages', object: @video
           %fieldset
             .form-group

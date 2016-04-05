@@ -1,0 +1,12 @@
+%ul.nav.nav-tabs
+  %li{ class: current_page?(admin_path) ? 'active' : '' }
+    = link_to admin_path do
+      %span.glyphicon.glyphicon-home
+
+  %li{ class: current_page?(admin_payments_path) ? 'active' : '' }
+    = link_to 'Recent Payments', admin_payments_path
+
+  %li{ class: current_page?(new_admin_video_path) ? 'active' : '' }
+    = link_to 'Add a New Video', new_admin_video_path
+
+%br

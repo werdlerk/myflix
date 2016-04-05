@@ -43,6 +43,7 @@ Myflix::Application.routes.draw do
 
   namespace :admin do
     get '/', action: 'home'
+    resources :payments, only: [:index]
     resources :videos, only: [:new, :create]
   end
 
