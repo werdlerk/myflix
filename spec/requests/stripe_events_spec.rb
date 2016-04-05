@@ -32,6 +32,10 @@ describe 'Stripe Events' do
       it 'sets the amount cents on the Payment' do
         expect(Payment.last.amount_cents).to eq 999
       end
+
+      it 'sets the stripe charge id as the reference' do
+        expect(Payment.last.reference).to eq 'ch_17vBtuFdcisUpWXbVrJHFIEf'
+      end
     end
 
     context 'without an existing user with the customer id' do
