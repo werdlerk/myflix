@@ -49,5 +49,6 @@ Myflix::Application.routes.draw do
   # Mockups
   get 'ui(/:action)', controller: 'ui'
 
+  mount StripeEvent::Engine, at: '/_stripe_events'
   mount Sidekiq::Web => '/sidekiq'
 end

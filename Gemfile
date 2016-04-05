@@ -34,6 +34,7 @@ gem 'mini_magick'
 
 # Payment processing
 gem 'stripe'
+gem 'stripe_event'
 
 # Decorator support
 gem 'draper'

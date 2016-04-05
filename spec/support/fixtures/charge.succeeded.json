@@ -1,0 +1,82 @@
+{
+  "id":"evt_17vBtuFdcisUpWXb8VYxCyKl",
+  "object":"event",
+  "api_version":"2016-02-03",
+  "created":1459454178,
+  "data":{
+    "object":{
+      "id":"ch_17vBtuFdcisUpWXbVrJHFIEf",
+      "object":"charge",
+      "amount":999,
+      "amount_refunded":0,
+      "application_fee":null,
+      "balance_transaction":"txn_17vBtuFdcisUpWXbJlAotK0U",
+      "captured":true,
+      "created":1459454178,
+      "currency":"usd",
+      "customer":"cus_8BZ10L35ILqiBH",
+      "description":null,
+      "destination":null,
+      "dispute":null,
+      "failure_code":null,
+      "failure_message":null,
+      "fraud_details":{
+
+      },
+      "invoice":"in_17vBtuFdcisUpWXbPyYORpy8",
+      "livemode":false,
+      "metadata":{
+
+      },
+      "order":null,
+      "paid":true,
+      "receipt_email":null,
+      "receipt_number":null,
+      "refunded":false,
+      "refunds":{
+        "object":"list",
+        "data":[
+
+        ],
+        "has_more":false,
+        "total_count":0,
+        "url":"/v1/charges/ch_17vBtuFdcisUpWXbVrJHFIEf/refunds"
+      },
+      "shipping":null,
+      "source":{
+        "id":"card_17vBttFdcisUpWXbJGANJavu",
+        "object":"card",
+        "address_city":null,
+        "address_country":null,
+        "address_line1":null,
+        "address_line1_check":null,
+        "address_line2":null,
+        "address_state":null,
+        "address_zip":null,
+        "address_zip_check":null,
+        "brand":"Visa",
+        "country":"US",
+        "customer":"cus_8BZ10L35ILqiBH",
+        "cvc_check":"pass",
+        "dynamic_last4":null,
+        "exp_month":3,
+        "exp_year":2017,
+        "fingerprint":"bhtT1Gdkkv3feyb4",
+        "funding":"credit",
+        "last4":"4242",
+        "metadata":{
+
+        },
+        "name":null,
+        "tokenization_method":null
+      },
+      "source_transfer":null,
+      "statement_descriptor":"MyFlix Subscription",
+      "status":"succeeded"
+    }
+  },
+  "livemode":false,
+  "pending_webhooks":0,
+  "request":"req_8BZ1nizYhw59xe",
+  "type":"charge.succeeded"
+}

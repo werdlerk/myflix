@@ -7,6 +7,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
+require 'webmock/rspec'
 require 'pry'
 require 'vcr'
 
