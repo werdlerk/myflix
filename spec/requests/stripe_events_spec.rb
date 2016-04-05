@@ -29,6 +29,10 @@ describe 'Stripe Events' do
         expect(Payment.count).to eq 1
       end
 
+      it 'associates the user with the Payment' do
+        expect(Payment.last.user).to eq user
+      end
+
       it 'sets the amount cents on the Payment' do
         expect(Payment.last.amount_cents).to eq 999
       end

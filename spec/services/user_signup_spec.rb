@@ -34,6 +34,12 @@ describe UserSignup do
         expect(User.count).to eq(1)
       end
 
+      it 'stores the customer id from Stripe' do
+        service.sign_up(stripe_token: stripe_token)
+
+        expect(user.stripe_customer_id).to eq "ABC123"
+      end
+
       context 'send welcome email' do
         before do
           service.sign_up(stripe_token: stripe_token)
