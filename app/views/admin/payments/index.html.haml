@@ -17,5 +17,5 @@
                 %tr
                   %td= payment.user.name
                   %td= payment.user.email
-                  %td= number_to_currency(payment.amount_cents / 100)
+                  %td= number_to_currency(payment.amount_cents / 100.0)
                   %td= payment.reference_id
