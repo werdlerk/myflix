@@ -50,6 +50,39 @@ describe 'Stripe Events' do
         expect(Payment.count).to eq 0
       end
     end
+  end
+
+  describe 'charge.failed' do
+
+    context 'without a customer id' do
+
+      it 'sends no e-mail' do
+        stub_event 'charge.failed_without_customer'
+
+        post '/_stripe_events', id: 'charge.failed_without_customer'
+
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+    end
+
+    context 'with a customer id' do
+      let!(:user) { Fabricate(:user, stripe_customer_id: 'cus_8BZ10L35ILqiBH') }
+
+      before do
+        stub_event 'charge.failed'
+
+        post '/_stripe_events', id: 'charge.failed'
+      end
+
+      it 'blocks the account' do
+        expect(user.reload.blocked?).to eq true
+      end
+
+      it 'sends an email about the failed charge' do
+        expect(ActionMailer::Base.deliveries.count).to eq 1
+      end
+    end
 
 
   end

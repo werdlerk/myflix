@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
 
-    if user && user.authenticate(params[:password])
+    if user && user.authenticate(params[:password]) && !user.blocked?
       session[:user_id] = user.id
       flash[:success] = "Welcome back, #{user.name}"
 
@@ -13,6 +13,9 @@ class SessionsController < ApplicationController
       else
         redirect_to home_path
       end
+    elsif user.try(:blocked?)
+      flash.now[:danger] = "Your account has been blocked"
+      render :new
     else
       flash.now[:danger] = "Incorrect email or password"
       render :new

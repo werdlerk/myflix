@@ -13,4 +13,10 @@ class UserMailer < ActionMailer::Base
          subject: 'Reset password'
   end
 
+  def payment_failed(user_id)
+    @user = User.find(user_id)
+    mail to: %("#{@user.name}" <#{@user.email}>),
+         subject: 'Payment failed'
+  end
+
 end
