@@ -75,8 +75,8 @@ describe 'Stripe Events' do
         post '/_stripe_events', id: 'charge.failed'
       end
 
-      it 'blocks the account' do
-        expect(user.reload.blocked?).to eq true
+      it 'deactivates the user' do
+        expect(user.reload).not_to be_active
       end
 
       it 'sends an email about the failed charge' do

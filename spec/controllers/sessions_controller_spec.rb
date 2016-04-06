@@ -38,9 +38,9 @@ describe SessionsController do
       end
     end
 
-    context 'with a blocked user' do
+    context 'with a deactivated user' do
       before do
-        user.update_attributes(blocked: true)
+        user.deactivate!
 
         post :create, { email: user.email, password: user.password }
       end

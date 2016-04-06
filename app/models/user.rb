@@ -47,4 +47,8 @@ class User < ActiveRecord::Base
     token.nil? || token_expiration.nil? || DateTime.now >= token_expiration
   end
 
+  def deactivate!
+    update_column(:active, false)
+  end
+
 end
