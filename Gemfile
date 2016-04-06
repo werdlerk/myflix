@@ -39,6 +39,10 @@ gem 'stripe_event'
 # Decorator support
 gem 'draper'
 
+# Search
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"

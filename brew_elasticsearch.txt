@@ -1,0 +1,19 @@
+elasticsearch: stable 2.3.1, HEAD
+Distributed search & analytics engine
+https://www.elastic.co/products/elasticsearch
+/usr/local/Cellar/elasticsearch/2.3.1 (59 files, 29.4M) *
+  Built from source
+From: https://github.com/Homebrew/homebrew-core/blob/master/Formula/elasticsearch.rb
+==> Caveats
+Data:    /usr/local/var/elasticsearch/elasticsearch_koen/
+Logs:    /usr/local/var/log/elasticsearch/elasticsearch_koen.log
+Plugins: /usr/local/Cellar/elasticsearch/2.3.1/libexec/plugins/
+Config:  /usr/local/etc/elasticsearch/
+plugin script: /usr/local/Cellar/elasticsearch/2.3.1/libexec/bin/plugin
+
+To have launchd start elasticsearch at login:
+  ln -sfv /usr/local/opt/elasticsearch/*.plist ~/Library/LaunchAgents
+Then to load elasticsearch now:
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch.plist
+Or, if you don't want/need launchctl, you can just run:
+  elasticsearch
