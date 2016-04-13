@@ -54,7 +54,7 @@ group :test do
   gem 'fabrication'
   gem 'faker'
   gem 'shoulda-matchers', require: false
-  gem 'database_cleaner', '1.2.0'
+  gem 'database_cleaner', '1.4.1'
   gem 'terminal-notifier-guard'
   gem 'capybara'
   gem 'capybara-email'
