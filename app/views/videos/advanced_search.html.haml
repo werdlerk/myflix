@@ -9,7 +9,8 @@
       .col-sm-6
         .checkbox
           %label
-            %input(type="checkbox") Include Reviews
+            = check_box_tag 'reviews', true, !!params[:reviews]
+            Include Reviews
     .form-group
       .row.average_rating_label Average Rating
       %label.col-sm-1.control-label(for="rating_from") From:

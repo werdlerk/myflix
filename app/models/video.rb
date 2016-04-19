@@ -23,11 +23,13 @@ class Video < ActiveRecord::Base
       query: {
         multi_match: {
           query: query,
-          fields: ["title", "description"],
+          fields: ["title^100", "description^50"],
           operator: "and"
         }
       }
     }
+    search_defintion[:query][:multi_match][:fields] << "reviews.text" if options[:reviews]
+
     __elasticsearch__.search search_defintion
   end
 
@@ -36,6 +38,11 @@ class Video < ActiveRecord::Base
   end
 
   def as_indexed_json(options={})
-    as_json(only: [ :title, :description ])
+    as_json(
+      only: [ :title, :description ],
+      include: {
+        reviews: { only: [ :rating, :text ]}
+      }
+    )
   end
 end
