@@ -7,6 +7,7 @@
       %li= link_to "Videos", videos_path
       %li= link_to "My Queue", my_queue_path
       %li= link_to "People", people_path
+      %li= link_to "Invite friend", new_invitation_path
 
     = form_tag search_videos_path, method: :get, enforce_utf8:false, class:'col-md-5 navbar-form' do
       .form-group
@@ -24,6 +25,5 @@
           %ul.dropdown-menu(role="menu" aria-labelledby="dlabel")
             %li
               = link_to 'Account', user_path(current_user)
-              = link_to 'Invite a friend', new_invitation_path
               = link_to 'Plan and Billing'
               = link_to 'Sign Out', logout_path
