@@ -1,0 +1,56 @@
+%section.advanced_search.container
+  = form_tag advanced_search_videos_path, method: :get, enforce_utf8: false, class: 'form-horizontal' do
+    %header
+      %h1 Advanced Search
+    .form-group
+      .col-sm-6
+        = search_field_tag :query, params[:query], class: 'form-control', placeholder: "Search videos by title, description"
+    .form-group
+      .col-sm-6
+        .checkbox
+          %label
+            %input(type="checkbox") Include Reviews
+    .form-group
+      .row.average_rating_label Average Rating
+      %label.col-sm-1.control-label(for="rating_from") From:
+      .col-sm-2
+        %select.form-control(id="rating_from")
+          %option -
+          - (10..50).map { |num| num / 10.0 }.each do |number|
+            %option{ value: number }= number
+      %label.col-sm-1.control-label(for="rating_to") To:
+      .col-sm-2
+        %select.form-control(id="rating_to")
+          %option -
+          - (10..50).map { |num| num / 10.0 }.each do |number|
+            %option{ value: number }= number
+    .form-group
+      .col-sm-6
+        = button_tag name: 'search', type: 'submit', class: 'btn btn-primary', data: { disable_with: '<span class="glyphicon glyphicon-search"/> Please wait...' } do
+          %span.glyphicon.glyphicon-search
+          Search
+
+  - if @results.present?
+    %hr
+    %h2.results_count Results: #{@results.size} videos found
+
+    - @results.each do |video|
+      %article.video.row
+        .video_data
+          %figure.col-sm-2
+            = image_tag video.small_cover_url, width:166, height:236, alt: "#{video.title} cover"
+          .video_body.col-sm-10
+            %header
+              %h3
+                = video.title
+            %p.video_description
+              = video.description
+            %hr
+            - if video.reviews.present?
+              .details
+                %span.average_rating Average rating: #{video.average_rating}
+                %span.reviews_count #{video.reviews.count} reviews
+              %footer.video_review
+                = video.reviews.first.text
+            - else
+              %footer.video_review There are currently no reviews.

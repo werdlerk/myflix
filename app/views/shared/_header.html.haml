@@ -11,8 +11,9 @@
     = form_tag search_videos_path, method: :get, enforce_utf8:false, class:'col-md-5 navbar-form' do
       .form-group
         = text_field_tag :q, nil, placeholder:'Search for videos here', class:'form-control'
-
       = button_tag 'Search', class:'btn btn-default'
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      = link_to 'Advanced Search', advanced_search_videos_path
 
     #user_links.pull-right
       %ul
