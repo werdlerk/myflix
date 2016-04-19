@@ -30,7 +30,7 @@
           %span.glyphicon.glyphicon-search
           Search
 
-  - if @videos.present?
+  - if params[:query]
     %hr
     %h2.results_count Results: #{@videos.size} videos found
 
