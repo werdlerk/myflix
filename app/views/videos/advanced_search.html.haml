@@ -13,12 +13,13 @@
             Include Reviews
     .form-group
       .row.average_rating_label Average Rating
-      %label.col-sm-1.control-label(for="rating_from") From:
+      = label_tag :rating_from, 'From:', class: 'col-sm-1 control-label'
       .col-sm-2
-        = select_tag :rating_from, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_from]), include_blank: true, class: 'form-control'
-      %label.col-sm-1.control-label(for="rating_to") To:
+        = select_tag :rating_from, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_from]), prompt: "-", class: 'form-control'
+
+      = label_tag :rating_to, "To:", class: 'col-sm-1 control-label'
       .col-sm-2
-        = select_tag :rating_to, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_to]), include_blank: true, class: 'form-control'
+        = select_tag :rating_to, options_for_select((10..50).map { |num| num / 10.0 }, params[:rating_to]), prompt: "-", class: 'form-control'
     .form-group
       .col-sm-6
         = button_tag name: nil, type: 'submit', class: 'btn btn-primary', data: { disable_with: '<span class="glyphicon glyphicon-search"/> Please wait...' } do
