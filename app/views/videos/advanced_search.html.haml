@@ -9,7 +9,7 @@
       .col-sm-6
         .checkbox
           %label
-            = check_box_tag 'reviews', true, !!params[:reviews]
+            = check_box_tag 'reviews', 1, params[:reviews].to_i == 1
             Include Reviews
     .form-group
       .row.average_rating_label Average Rating
