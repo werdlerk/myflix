@@ -21,27 +21,24 @@ class Video < ActiveRecord::Base
   def self.search(query, options = {})
     search_defintion = {
       query: {
-        bool: {
-          must: {
-            multi_match: {
-              query: query,
-              fields: ["title^100", "description^50"],
-              operator: "and"
-            }
-          }
+        multi_match: {
+          query: query,
+          fields: ["title^100", "description^50"],
+          operator: "and"
         }
       }
     }
-    search_defintion[:query][:bool][:must][:multi_match][:fields] << "reviews.text" if options[:reviews]
+    search_defintion[:query][:multi_match][:fields] << "reviews.text" if options[:reviews]
 
     if options[:rating_from].present? || options[:rating_to].present?
-      search_defintion[:query][:bool][:filter] = { range: { average_rating: {} } }
-      if options[:rating_from].present?
-        search_defintion[:query][:bool][:filter][:range][:average_rating][:gte] = options[:rating_from]
-      end
-      if options[:rating_to].present?
-        search_defintion[:query][:bool][:filter][:range][:average_rating][:lte] = options[:rating_to]
-      end
+      search_defintion[:filter] = {
+        range: {
+          average_rating: {
+            gte: (options[:rating_from] if options[:rating_from].present?),
+            lte: (options[:rating_to] if options[:rating_to].present?)
+          }
+        }
+      }
     end
 
     __elasticsearch__.search search_defintion
