@@ -17,7 +17,7 @@ class VideosController < AuthenticatedController
   def advanced_search
     @videos = []
     if params[:query]
-      @videos = Video.search(params[:query], reviews: !!params[:reviews]).records.to_a
+      @videos = Video.search(params[:query], reviews: !!params[:reviews], rating_from: params[:rating_from], rating_to: params[:rating_to]).records.to_a
     end
   end
 end
