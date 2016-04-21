@@ -13,6 +13,8 @@ describe 'Stripe Events' do
     end
 
     it 'is successful' do
+      Fabricate(:user, stripe_customer_id: 'cus_8BZ10L35ILqiBH')
+
       post '/_stripe_events', id: 'charge.succeeded'
 
       expect(response.code).to eq '200'
@@ -44,10 +46,10 @@ describe 'Stripe Events' do
 
     context 'without an existing user with the customer id' do
 
-      it 'doesnt create a Payment' do
-        post '/_stripe_events', id: 'charge.succeeded'
-
-        expect(Payment.count).to eq 0
+      it 'raises an error' do
+        expect {
+          post '/_stripe_events', id: 'charge.succeeded'
+          }.to raise_error ActiveRecord::RecordInvalid
       end
     end
   end
