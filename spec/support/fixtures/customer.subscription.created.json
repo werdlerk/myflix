@@ -1,0 +1,47 @@
+{
+  "id": "evt_17xLABFdcisUpWXbGRUjKITP",
+  "object": "event",
+  "api_version": "2016-02-03",
+  "created": 1459966439,
+  "data": {
+    "object": {
+      "id": "sub_8DmjGIcsKdzH7J",
+      "object": "subscription",
+      "application_fee_percent": null,
+      "cancel_at_period_end": false,
+      "canceled_at": null,
+      "current_period_end": 1462558438,
+      "current_period_start": 1459966438,
+      "customer": "cus_8Dmj3tsm2zfZgd",
+      "discount": null,
+      "ended_at": null,
+      "metadata": {
+      },
+      "plan": {
+        "id": "base",
+        "object": "plan",
+        "amount": 999,
+        "created": 1459453986,
+        "currency": "usd",
+        "interval": "month",
+        "interval_count": 1,
+        "livemode": false,
+        "metadata": {
+        },
+        "name": "Base plan",
+        "statement_descriptor": "MyFlix Subscription",
+        "trial_period_days": null
+      },
+      "quantity": 1,
+      "start": 1459966438,
+      "status": "active",
+      "tax_percent": null,
+      "trial_end": null,
+      "trial_start": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 1,
+  "request": "req_8Dmj1fFvXkXa8X",
+  "type": "customer.subscription.created"
+}

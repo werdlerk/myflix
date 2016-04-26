@@ -21,7 +21,8 @@ Myflix::Application.routes.draw do
 
   resources :videos, only: [:index, :show] do
     collection do
-      get 'search'
+      get :search
+      get :advanced_search
     end
     resources :reviews, only: [:create]
   end
@@ -43,11 +44,13 @@ Myflix::Application.routes.draw do
 
   namespace :admin do
     get '/', action: 'home'
+    resources :payments, only: [:index]
     resources :videos, only: [:new, :create]
   end
 
   # Mockups
   get 'ui(/:action)', controller: 'ui'
 
+  mount StripeEvent::Engine, at: '/_stripe_events'
   mount Sidekiq::Web => '/sidekiq'
 end

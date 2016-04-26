@@ -13,7 +13,7 @@ describe StripeWrapper, :vcr do
   end
 
   describe StripeWrapper::Customer do
-    let(:customer) { StripeWrapper::Customer.create(token: stripe_token.id, customer: "Klaas Vaak") }
+    let(:customer) { StripeWrapper::Customer.create(token: stripe_token.id, customer: "Klaas Vaak", email: "klaas@example.com") }
 
     describe '.create' do
       context 'with valid card' do

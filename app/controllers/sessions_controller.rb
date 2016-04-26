@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:email])
 
-    if user && user.authenticate(params[:password])
+    if user && user.authenticate(params[:password]) && user.active?
       session[:user_id] = user.id
       flash[:success] = "Welcome back, #{user.name}"
 
@@ -14,7 +14,11 @@ class SessionsController < ApplicationController
         redirect_to home_path
       end
     else
-      flash.now[:danger] = "Incorrect email or password"
+      if user && !user.active?
+        flash.now[:danger] = "Your account has been deactivated"
+      else
+        flash.now[:danger] = "Incorrect email or password"
+      end
       render :new
     end
   end

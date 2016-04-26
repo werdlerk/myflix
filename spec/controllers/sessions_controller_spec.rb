@@ -38,6 +38,26 @@ describe SessionsController do
       end
     end
 
+    context 'with a deactivated user' do
+      before do
+        user.deactivate!
+
+        post :create, { email: user.email, password: user.password }
+      end
+
+      it "does not set the user id in the session" do
+        expect(session['user_id']).to be_nil
+      end
+
+      it "renders the new template" do
+        expect(response).to render_template :new
+      end
+
+      it "sets the error message" do
+        expect(flash[:danger]).to be_present
+      end
+    end
+
     context "with valid credentials" do
       before do
         post :create, { email: user.email, password: user.password }

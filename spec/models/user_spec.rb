@@ -9,6 +9,7 @@ describe User do
     it { should have_many(:leading_relationships).class_name('Relationship').with_foreign_key(:leader_id) }
     it { should have_many(:leaders).through(:following_relationships) }
     it { should have_many(:invitations) }
+    it { should have_many(:payments) }
   end
 
   context 'validations' do
@@ -124,7 +125,14 @@ describe User do
       end
 
     end
+  end
 
+  describe '#deactivate!' do
+    it 'deactivates an active user' do
+      john = Fabricate(:user, active: true)
+      john.deactivate!
+      expect(john).not_to be_active
+    end
   end
 
 end

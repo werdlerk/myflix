@@ -13,4 +13,17 @@ class VideosController < AuthenticatedController
   def search
     @videos = Video.search_by_title(params[:q])
   end
+
+  def advanced_search
+    @videos = []
+    options = {
+      reviews: params[:reviews].to_i == 1,
+      rating_from: params[:rating_from],
+      rating_to: params[:rating_to]
+    }
+
+    if params[:query]
+      @videos = Video.search(params[:query], options).records.to_a
+    end
+  end
 end

@@ -22,7 +22,7 @@ feature "Invite a friend", :vcr, js: true do
 
   def user_sends_invitation
     click_link "Welcome, #{user.name}"
-    click_link "Invite a friend"
+    click_link "Invite friend"
     expect(page).to have_content "Invite a friend to join MyFlix!"
 
     fill_in "Friend's Name", with: friend[:name]

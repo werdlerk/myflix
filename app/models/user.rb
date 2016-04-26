@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
   has_many :leaders, through: :following_relationships
 
   has_many :invitations
+  has_many :payments
 
   has_secure_password(validations: false)
 
@@ -44,6 +45,10 @@ class User < ActiveRecord::Base
 
   def token_expired?
     token.nil? || token_expiration.nil? || DateTime.now >= token_expiration
+  end
+
+  def deactivate!
+    update_column(:active, false)
   end
 
 end

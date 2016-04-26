@@ -26,4 +26,13 @@ feature 'User signs in' do
 
     expect(page).not_to have_content "John Doe"
   end
+
+  scenario 'with a deactivated account' do
+    user.deactivate!
+
+    log_in_user(user)
+
+    expect(page).not_to have_content "John Doe"
+    expect(page).to have_content "Your account has been deactivated"
+  end
 end

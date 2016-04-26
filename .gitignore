@@ -24,3 +24,5 @@
 
 # Ignore carrierwave uploads directory
 /public/uploads
+
+/brew_*

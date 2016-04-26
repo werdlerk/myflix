@@ -34,9 +34,14 @@ gem 'mini_magick'
 
 # Payment processing
 gem 'stripe'
+gem 'stripe_event'
 
 # Decorator support
 gem 'draper'
+
+# Search
+gem 'elasticsearch-model'
+gem 'elasticsearch-rails'
 
 group :development do
   gem "better_errors"

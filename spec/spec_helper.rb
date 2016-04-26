@@ -7,6 +7,7 @@ require 'capybara/rails'
 require 'capybara/rspec'
 require 'capybara/email/rspec'
 require 'sidekiq/testing'
+require 'webmock/rspec'
 require 'pry'
 require 'vcr'
 
@@ -98,6 +99,11 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     DatabaseCleaner.clean
+  end
+
+  # RSpec tests related to Elasticsearch
+  config.before(:each, elasticsearch: true) do
+    Video.__elasticsearch__.create_index! force: true
   end
 end
 

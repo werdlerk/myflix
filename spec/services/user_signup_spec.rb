@@ -4,15 +4,12 @@ describe UserSignup do
 
   describe '#sign_up' do
     let(:stripe_customer) { double(Stripe::Customer) }
-    let(:stripe_charge) { double(Stripe::Charge) }
     let(:stripe_token) { "ABC" }
     let(:service) { UserSignup.new(user) }
 
     before do
       allow(StripeWrapper::Customer).to receive(:create).and_return stripe_customer
       allow(stripe_customer).to receive_messages(succesful?: true, id: "ABC123")
-      allow(StripeWrapper::Charge).to receive(:create).and_return stripe_charge
-      allow(stripe_charge).to receive_messages(succesful?: true)
     end
 
     context 'with valid input' do
@@ -35,6 +32,12 @@ describe UserSignup do
 
         expect(user).to be_persisted
         expect(User.count).to eq(1)
+      end
+
+      it 'stores the customer id from Stripe' do
+        service.sign_up(stripe_token: stripe_token)
+
+        expect(user.stripe_customer_id).to eq "ABC123"
       end
 
       context 'send welcome email' do
@@ -114,28 +117,6 @@ describe UserSignup do
         expect(StripeWrapper::Charge).not_to receive(:create)
 
         service.sign_up
-      end
-    end
-
-    context 'with failed Stripe::Charge' do
-      let(:user) { Fabricate.build(:user) }
-
-      before do
-        allow(stripe_charge).to receive_messages(succesful?: false, error_message: 'Something went wrong :-(')
-
-        service.sign_up(stripe_token: stripe_token)
-      end
-
-      it 'does not create the user' do
-        expect(User.count).to eq(0)
-      end
-
-      it 'does not send an email' do
-        expect(ActionMailer::Base.deliveries).to be_empty
-      end
-
-      it 'sets the error message' do
-        expect(service.error_message).to eq 'Something went wrong :-('
       end
     end
 

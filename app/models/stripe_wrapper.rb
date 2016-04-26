@@ -1,5 +1,6 @@
 module StripeWrapper
 
+  DEFAULT_PLAN = "base"
   DEFAULT_CURRENCY = "usd"
 
   class Customer
@@ -13,7 +14,9 @@ module StripeWrapper
       begin
         customer = Stripe::Customer.create(
           source: options[:token],
-          description: options[:customer]
+          description: options[:customer],
+          email: options[:email],
+          plan: options[:plan] || DEFAULT_PLAN
         )
         new(:success, customer: customer)
 
